@@ -1,6 +1,27 @@
 # Leeroopedia MCP Server
 
-MCP server for searching Leeroopedia's curated ML/AI knowledge base.
+<p align="center">
+  <strong>Give your AI coding agent access to curated ML/AI knowledge.</strong>
+</p>
+
+<p align="center">
+  <a href="https://pypi.org/project/leeroopedia-mcp/"><img src="https://img.shields.io/pypi/v/leeroopedia-mcp?color=blue" alt="PyPI"></a>
+  <a href="https://discord.gg/hqVbPNNEZM"><img src="https://dcbadge.limes.pink/api/server/hqVbPNNEZM?style=flat" alt="Discord"></a>
+  <a href="https://github.com/Leeroo-AI/leeroopedia-mcp"><img src="https://img.shields.io/github/commit-activity/m/Leeroo-AI/leeroopedia-mcp" alt="GitHub commit activity"></a>
+  <a href="https://www.ycombinator.com/companies/leeroo"><img src="https://img.shields.io/badge/Y%20Combinator-X25-orange?logo=ycombinator&logoColor=white" alt="Y Combinator X25"></a>
+</p>
+
+---
+
+## What is Leeroopedia?
+
+**Your ML & Data Knowledge Wiki.** A centralized playbook of best practices and expert-level knowledge for Machine Learning and Data domains, Learnt by AI, built by AI, for AI.
+
+Browse the full knowledge base at [leeroopedia.com](https://leeroopedia.com). Apply for early beta access.
+
+This MCP server lets AI coding agents (Claude Code, Cursor) search that knowledge base directly while they work — no copy-pasting needed.
+
+---
 
 ## Quick Start
 
@@ -51,30 +72,25 @@ Add to your Cursor settings (`.cursor/mcp.json`):
 }
 ```
 
+---
+
 ## Available Tools
 
-### wiki_idea_search
+### `wiki_idea_search`
 
 Search for conceptual knowledge:
-- **Principles**: Theoretical concepts, fundamental ideas
-- **Heuristics**: Best practices, rules of thumb
+- **Principles** — Theoretical concepts, fundamental ideas
+- **Heuristics** — Best practices, rules of thumb
 
-Example: "LoRA fine-tuning principles"
+Example: `"LoRA fine-tuning principles"`
 
-### wiki_code_search
+### `wiki_code_search`
 
 Search for implementation knowledge:
-- **Implementations**: Code patterns, API usage, algorithms
-- **Environments**: Setup guides, configuration, dependencies
+- **Implementations** — Code patterns, API usage, algorithms
+- **Environments** — Setup guides, configuration, dependencies
 
-Example: "PyTorch LoRA implementation"
-
-## Environment Variables
-
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `LEEROOPEDIA_API_KEY` | Yes | - | Your Leeroopedia API key |
-| `LEEROOPEDIA_API_URL` | No | `https://api.leeroopedia.com` | API endpoint |
+Example: `"PyTorch LoRA implementation"`
 
 ## Troubleshooting
 
@@ -106,6 +122,8 @@ Purchase more credits at [app.leeroopedia.com](https://app.leeroopedia.com).
 ### "Rate limit exceeded" (429)
 
 Wait for the retry period before making more requests.
+
+---
 
 ## License
 
