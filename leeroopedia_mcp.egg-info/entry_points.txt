@@ -1,2 +1,0 @@
-[console_scripts]
-leeroopedia-mcp = leeroopedia_mcp.server:main
