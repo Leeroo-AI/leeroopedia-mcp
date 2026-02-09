@@ -3,14 +3,19 @@ Test 1: Standalone smoke test for async task-based search API.
 
 Tests the raw HTTP flow: POST /v1/search -> poll GET /v1/search/task/{task_id}
 without involving the MCP client layer.
+
+Requires LEEROOPEDIA_API_KEY env var to be set.
 """
 
 import asyncio
+import os
 import time
+
 import httpx
 
-API_URL = "https://api.leeroopedia.com"
-API_KEY = "kpsk_021a25ec_021a25ecdbc544405e284e7419239b05"
+# Read from env vars (no hardcoded keys)
+API_URL = os.getenv("LEEROOPEDIA_API_URL", "https://api.leeroopedia.com")
+API_KEY = os.environ["LEEROOPEDIA_API_KEY"]
 
 
 async def test_async_search():

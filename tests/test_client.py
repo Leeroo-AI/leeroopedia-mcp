@@ -3,14 +3,12 @@ Test 2: Test the LeeroopediaClient directly.
 
 Tests the full MCP client flow: client.search() which internally
 creates a task and polls for results.
+
+Requires LEEROOPEDIA_API_KEY env var to be set.
 """
 
 import asyncio
 import os
-
-# Set env vars before importing config
-os.environ["LEEROOPEDIA_API_KEY"] = "kpsk_021a25ec_021a25ecdbc544405e284e7419239b05"
-os.environ["LEEROOPEDIA_API_URL"] = "https://api.leeroopedia.com"
 
 from leeroopedia_mcp.config import Config
 from leeroopedia_mcp.client import LeeroopediaClient
