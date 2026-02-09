@@ -22,6 +22,12 @@ class Config:
         self.api_key = os.getenv("LEEROOPEDIA_API_KEY", "")
         self.api_url = os.getenv("LEEROOPEDIA_API_URL", "https://api.leeroopedia.com").rstrip("/")
 
+        # Polling config for async task API (Celery queue backend)
+        # Max seconds to wait for a search task to complete
+        self.poll_max_wait = int(os.getenv("LEEROOPEDIA_POLL_MAX_WAIT", "120"))
+        # Initial poll interval in seconds (grows via exponential backoff)
+        self.poll_initial_interval = float(os.getenv("LEEROOPEDIA_POLL_INTERVAL", "0.5"))
+
     def validate(self) -> None:
         """
         Validate configuration.
@@ -32,7 +38,7 @@ class Config:
         if not self.api_key:
             raise ConfigError(
                 "LEEROOPEDIA_API_KEY environment variable is required.\n"
-                "Get your API key at https://leeroopedia.com/dashboard\n\n"
+                "Get your API key at https://app.leeroopedia.com\n\n"
                 "Set it in your MCP config:\n"
                 '  "env": {"LEEROOPEDIA_API_KEY": "kpsk_..."}'
             )

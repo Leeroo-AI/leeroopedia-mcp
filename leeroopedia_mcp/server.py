@@ -24,6 +24,7 @@ from .client import (
     AuthenticationError,
     InsufficientCreditsError,
     RateLimitError,
+    TaskTimeoutError,
     APIError,
 )
 from .tools import get_tool_definitions, TOOL_NAMES
@@ -120,13 +121,21 @@ def create_mcp_server(config: Config) -> "Server":
         except InsufficientCreditsError as e:
             return [TextContent(
                 type="text",
-                text=f"Insufficient credits: {e}\n\nPurchase more at https://leeroopedia.com/dashboard",
+                text=f"Insufficient credits: {e}\n\nPurchase more at https://app.leeroopedia.com",
             )]
 
         except RateLimitError as e:
             return [TextContent(
                 type="text",
                 text=f"Rate limit exceeded. Retry after {e.retry_after} seconds.",
+            )]
+
+        except TaskTimeoutError as e:
+            logger.warning(f"Search task timed out: {e.task_id}")
+            return [TextContent(
+                type="text",
+                text=f"Search timed out ({e.task_id}). "
+                     f"The search may still be processing. Try again or use a more specific query.",
             )]
 
         except APIError as e:
