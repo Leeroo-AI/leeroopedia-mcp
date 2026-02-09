@@ -15,7 +15,7 @@
 
 ## What is Leeroopedia?
 
-**Your ML & Data Knowledge Wiki.** A centralized playbook of best practices and expert-level knowledge for Machine Learning and Data domains, Learnt by AI, built by AI, for AI.
+**Your ML & Data Knowledge Wiki.** Learnt by AI, built by AI, for AI. A centralized playbook of best practices and expert-level knowledge for Machine Learning and Data domains.
 
 Browse the full knowledge base at [leeroopedia.com](https://leeroopedia.com). Apply for early beta access.
 
@@ -74,27 +74,21 @@ Add to your Cursor settings (`.cursor/mcp.json`):
 
 ---
 
-## Available Tools
+## Environment Variables
 
-### `wiki_idea_search`
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `LEEROOPEDIA_API_KEY` | Yes | — | Your Leeroopedia API key |
+| `LEEROOPEDIA_API_URL` | No | `https://api.leeroopedia.com` | API endpoint |
 
-Search for conceptual knowledge:
-- **Principles** — Theoretical concepts, fundamental ideas
-- **Heuristics** — Best practices, rules of thumb
+---
 
-Example: `"LoRA fine-tuning principles"`
+<details>
+<summary><strong>Troubleshooting</strong></summary>
 
-### `wiki_code_search`
+<br>
 
-Search for implementation knowledge:
-- **Implementations** — Code patterns, API usage, algorithms
-- **Environments** — Setup guides, configuration, dependencies
-
-Example: `"PyTorch LoRA implementation"`
-
-## Troubleshooting
-
-### "LEEROOPEDIA_API_KEY is required"
+**"LEEROOPEDIA_API_KEY is required"**
 
 Set your API key in the MCP config:
 
@@ -111,20 +105,28 @@ Set your API key in the MCP config:
 }
 ```
 
-### "Invalid or revoked API key" (401)
+**"Invalid or revoked API key" (401)**
 
 Double-check your API key at [app.leeroopedia.com](https://app.leeroopedia.com). Re-copy if needed.
 
-### "Insufficient credits" (402)
+**"Insufficient credits" (402)**
 
 Purchase more credits at [app.leeroopedia.com](https://app.leeroopedia.com).
 
-### "Rate limit exceeded" (429)
+**"Rate limit exceeded" (429)**
 
 Wait for the retry period before making more requests.
 
+</details>
+
 ---
+
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on how to get started.
+
+This project follows our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## License
 
-MIT
+This project is licensed under the [MIT License](LICENSE).
