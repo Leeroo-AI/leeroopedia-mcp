@@ -35,7 +35,7 @@ pip install leeroopedia-mcp
 
 ### 2. Get Your API Key
 
-1. Go to [leeroopedia.com](https://leeroopedia.com)
+1. Go to [app.leeroopedia.com](https://app.leeroopedia.com)
 2. Create an account or log in
 3. Navigate to **Dashboard > API Keys**
 4. Copy your API key (format: `kpsk_...`)
@@ -120,11 +120,11 @@ Set your API key in the MCP config:
 
 ### "Invalid or revoked API key" (401)
 
-Double-check your API key in the Dashboard. Re-copy if needed.
+Double-check your API key at [app.leeroopedia.com](https://app.leeroopedia.com). Re-copy if needed.
 
 ### "Insufficient credits" (402)
 
-Purchase more credits at https://leeroopedia.com/dashboard
+Purchase more credits at [app.leeroopedia.com](https://app.leeroopedia.com).
 
 ### "Rate limit exceeded" (429)
 
