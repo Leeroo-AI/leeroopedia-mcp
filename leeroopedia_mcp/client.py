@@ -10,7 +10,7 @@ import asyncio
 import logging
 import time
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 import httpx
 
@@ -66,7 +66,6 @@ class SearchResponse:
     """Response from search API."""
     success: bool
     results: str
-    results_count: int
     latency_ms: int
     credits_remaining: int
     error: Optional[str] = None
@@ -93,7 +92,7 @@ class LeeroopediaClient:
             headers={
                 "X-API-Key": config.api_key,
                 "Content-Type": "application/json",
-                "User-Agent": "leeroopedia-mcp/0.1.0",
+                "User-Agent": "leeroopedia-mcp/0.2.0",
             },
         )
 
@@ -137,10 +136,8 @@ class LeeroopediaClient:
 
     async def _create_search_task(
         self,
-        query: str,
         tool: str,
-        top_k: int = 5,
-        domains: Optional[List[str]] = None,
+        arguments: Dict[str, Any],
     ) -> str:
         """
         Create a search task via POST /search.
@@ -149,10 +146,8 @@ class LeeroopediaClient:
         runs asynchronously in the Celery worker queue.
 
         Args:
-            query: Search query string
-            tool: Tool name (wiki_idea_search or wiki_code_search)
-            top_k: Number of results to return (max 20)
-            domains: Optional domain filters
+            tool: Agentic tool name
+            arguments: Tool-specific arguments dict
 
         Returns:
             task_id string for polling
@@ -161,16 +156,10 @@ class LeeroopediaClient:
             AuthenticationError, InsufficientCreditsError,
             RateLimitError, APIError on HTTP errors
         """
-        payload: Dict[str, Any] = {
-            "query": query,
+        payload = {
             "tool": tool,
+            "arguments": arguments,
         }
-
-        if top_k != 5:
-            payload["top_k"] = min(top_k, 20)
-
-        if domains:
-            payload["domains"] = domains
 
         response = await self.client.post("/v1/search", json=payload)
 
@@ -223,7 +212,6 @@ class LeeroopediaClient:
                 return SearchResponse(
                     success=data.get("success", True),
                     results=data.get("results", ""),
-                    results_count=data.get("results_count", 0),
                     latency_ms=data.get("latency_ms", 0),
                     credits_remaining=data.get("credits_remaining", 0),
                 )
@@ -245,23 +233,19 @@ class LeeroopediaClient:
 
     async def search(
         self,
-        query: str,
-        tool: str = "wiki_idea_search",
-        top_k: int = 5,
-        domains: Optional[List[str]] = None,
+        tool: str,
+        arguments: Dict[str, Any],
     ) -> SearchResponse:
         """
-        Execute a search query using the async task API.
+        Execute an agentic search using the async task API.
 
         Creates a search task, then polls for the result with
         exponential backoff. The caller sees a simple request/response
         interface - the async polling is handled internally.
 
         Args:
-            query: Search query string
-            tool: Tool name (wiki_idea_search or wiki_code_search)
-            top_k: Number of results to return (max 20)
-            domains: Optional domain filters
+            tool: Agentic tool name (one of 7 tools)
+            arguments: Tool-specific arguments dict
 
         Returns:
             SearchResponse with results
@@ -276,10 +260,8 @@ class LeeroopediaClient:
         try:
             # Step 1: Create the search task (returns immediately)
             task_id = await self._create_search_task(
-                query=query,
                 tool=tool,
-                top_k=top_k,
-                domains=domains,
+                arguments=arguments,
             )
 
             # Step 2: Poll for the result with exponential backoff

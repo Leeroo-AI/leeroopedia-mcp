@@ -20,8 +20,8 @@ cd leeroopedia-mcp
 python -m venv .venv
 source .venv/bin/activate
 
-# Install with dev dependencies
-pip install -e ".[dev]"
+# Install in editable mode
+pip install -e .
 ```
 
 ### Environment Variables
@@ -43,19 +43,6 @@ Get your API key at [app.leeroopedia.com](https://app.leeroopedia.com).
 - Use clear, consistent naming
 - Add helpful comments to explain non-obvious logic
 
-### Running Tests
-
-```bash
-# Set your API key first
-export LEEROOPEDIA_API_KEY=kpsk_your_key_here
-
-# Run smoke test (raw HTTP flow)
-python tests/test_smoke.py
-
-# Run client test (LeeroopediaClient)
-python tests/test_client.py
-```
-
 ### Linting
 
 ```bash
@@ -70,7 +57,7 @@ flake8 leeroopedia_mcp/
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/your-feature`)
 3. Make your changes
-4. Run tests and linting
+4. Run linting
 5. Commit with a clear message
 6. Push to your fork
 7. Open a Pull Request
@@ -86,7 +73,6 @@ flake8 leeroopedia_mcp/
 - Keep PRs focused on a single change
 - Include a description of what changed and why
 - Update documentation if needed
-- Ensure all tests pass
 
 ## Project Structure
 
@@ -97,8 +83,7 @@ leeroopedia-mcp/
 │   ├── server.py         # MCP server entry point
 │   ├── client.py         # HTTP client (async task API)
 │   ├── config.py         # Configuration from env vars
-│   └── tools.py          # MCP tool definitions
-├── tests/                # Test scripts
+│   └── tools.py          # MCP tool definitions (8 agentic tools)
 ├── .github/workflows/    # CI/CD (PyPI publish on release)
 ├── pyproject.toml        # Package metadata
 └── README.md

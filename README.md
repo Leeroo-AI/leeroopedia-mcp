@@ -74,12 +74,104 @@ Add to your Cursor settings (`.cursor/mcp.json`):
 
 ---
 
+## Available Tools
+
+The MCP server provides **8 agentic tools**. Each tool (except `get_page`) triggers an AI agent on the backend that searches the knowledge base from multiple angles, reads relevant pages, and synthesizes a structured response.
+
+### `consult_literature`
+
+Search the knowledge base like a research librarian. An AI agent synthesizes a consensus answer grounded in evidence, with `[PageID]` citations.
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `query` | Yes | Research question or topic to investigate |
+| `context` | No | Additional context to guide the search |
+
+### `build_plan`
+
+Build a step-by-step ML execution plan grounded in knowledge base evidence. Returns an overview, key specs, numbered steps, and validation criteria.
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `goal` | Yes | What you want to accomplish |
+| `constraints` | No | Constraints or requirements (e.g., hardware limits, time budget) |
+
+### `review_plan`
+
+Review a proposed ML plan against knowledge base best practices. Returns approvals, risks, and improvement suggestions.
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `proposal` | Yes | The plan or proposal to review |
+| `goal` | Yes | The intended goal of the plan |
+
+### `verify_code_math`
+
+Verify code correctness against authoritative ML/math concept descriptions. Returns a Pass/Fail verdict with analysis.
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `code_snippet` | Yes | The code to verify |
+| `concept_name` | Yes | The mathematical/ML concept being implemented |
+
+### `diagnose_failure`
+
+Diagnose ML training or deployment failures using knowledge base evidence. Returns diagnosis, fix steps, and prevention advice.
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `symptoms` | Yes | Description of the failure symptoms |
+| `logs` | Yes | Relevant log output or error messages |
+
+### `propose_hypothesis`
+
+Propose ranked research hypotheses grounded in knowledge base evidence. Returns ranked ideas with rationale and suggested experiments.
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `current_status` | Yes | Where the project stands now |
+| `recent_experiments` | No | Description of recent experiments and their outcomes |
+
+### `query_hyperparameter_priors`
+
+Query documented hyperparameter values, ranges, and tuning heuristics. Returns a suggestion table with KB-grounded justification.
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `query` | Yes | Hyperparameter question (e.g., "learning rate for LoRA fine-tuning Llama-3 8B") |
+
+### `get_page`
+
+Retrieve the full content of a specific knowledge base page by its exact ID. A direct lookup — no AI agent needed.
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `page_id` | Yes | Exact page ID (e.g., `Workflow/QLoRA_Finetuning`, `Principle/LoRA_Rank_Selection`) |
+
+---
+
+## How It Works
+
+The MCP server uses an **async task-based API**:
+
+1. Your agent calls a tool (e.g., `consult_literature`)
+2. The MCP client sends `POST /v1/search` with the tool name and arguments
+3. The backend queues the search task and returns a `task_id` immediately
+4. The client polls `GET /v1/search/task/{task_id}` with exponential backoff
+5. When the task completes, results are returned to your agent
+
+This architecture allows the backend AI agents to take the time they need for thorough research without blocking or timing out.
+
+---
+
 ## Environment Variables
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
 | `LEEROOPEDIA_API_KEY` | Yes | — | Your Leeroopedia API key |
 | `LEEROOPEDIA_API_URL` | No | `https://api.leeroopedia.com` | API endpoint |
+| `LEEROOPEDIA_POLL_MAX_WAIT` | No | `300` | Max seconds to wait for a search task |
+| `LEEROOPEDIA_POLL_INTERVAL` | No | `0.5` | Initial poll interval in seconds (grows via backoff) |
 
 ---
 
@@ -116,6 +208,10 @@ Purchase more credits at [app.leeroopedia.com](https://app.leeroopedia.com).
 **"Rate limit exceeded" (429)**
 
 Wait for the retry period before making more requests.
+
+**"Search timed out" (504)**
+
+The search task didn't complete within the poll window. Try a more specific query, or increase `LEEROOPEDIA_POLL_MAX_WAIT`.
 
 </details>
 

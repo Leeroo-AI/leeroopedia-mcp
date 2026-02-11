@@ -24,7 +24,7 @@ class Config:
 
         # Polling config for async task API (Celery queue backend)
         # Max seconds to wait for a search task to complete
-        self.poll_max_wait = int(os.getenv("LEEROOPEDIA_POLL_MAX_WAIT", "120"))
+        self.poll_max_wait = int(os.getenv("LEEROOPEDIA_POLL_MAX_WAIT", "300"))
         # Initial poll interval in seconds (grows via exponential backoff)
         self.poll_initial_interval = float(os.getenv("LEEROOPEDIA_POLL_INTERVAL", "0.5"))
 

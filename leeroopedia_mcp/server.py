@@ -81,30 +81,15 @@ def create_mcp_server(config: Config) -> "Server":
 
     @mcp.call_tool()
     async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
-        """Handle tool calls."""
+        """Handle tool calls — forward full arguments dict to the backend."""
         if name not in TOOL_NAMES:
             return [TextContent(
                 type="text",
-                text=f"Unknown tool: {name}. Available: {', '.join(TOOL_NAMES)}",
+                text=f"Unknown tool: {name}. Available: {', '.join(sorted(TOOL_NAMES))}",
             )]
-
-        query = arguments.get("query", "")
-        if not query:
-            return [TextContent(
-                type="text",
-                text="Error: 'query' argument is required",
-            )]
-
-        top_k = arguments.get("top_k", 5)
-        domains = arguments.get("domains")
 
         try:
-            response = await client.search(
-                query=query,
-                tool=name,
-                top_k=top_k,
-                domains=domains,
-            )
+            response = await client.search(tool=name, arguments=arguments)
 
             footer = f"\n\n---\n*Credits remaining: {response.credits_remaining}*"
             return [TextContent(
