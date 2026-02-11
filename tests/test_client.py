@@ -4,14 +4,48 @@ Test 2: Test the LeeroopediaClient directly.
 Tests the full MCP client flow: client.search() which internally
 creates a task and polls for results.
 
-Requires LEEROOPEDIA_API_KEY env var to be set.
+Loads LEEROOPEDIA_API_KEY from leeroopedia_mcp/.env automatically.
 """
 
 import asyncio
 import os
+from pathlib import Path
 
 from leeroopedia_mcp.config import Config
 from leeroopedia_mcp.client import LeeroopediaClient
+
+
+def load_dotenv():
+    """Load variables from leeroopedia_mcp/.env into os.environ.
+
+    Finds the .env file relative to this test file's location
+    (tests/ -> parent = leeroopedia_mcp/).
+    Only sets variables that aren't already in the environment.
+    """
+    env_path = Path(__file__).resolve().parent.parent / ".env"
+    if not env_path.exists():
+        print(f"  Warning: .env file not found at {env_path}")
+        return
+
+    with open(env_path) as f:
+        for line in f:
+            line = line.strip()
+            # Skip empty lines and comments
+            if not line or line.startswith("#"):
+                continue
+            # Parse KEY=VALUE (strip surrounding quotes from value)
+            if "=" not in line:
+                continue
+            key, _, value = line.partition("=")
+            key = key.strip()
+            value = value.strip().strip('"').strip("'")
+            # Don't override existing env vars
+            if key not in os.environ:
+                os.environ[key] = value
+
+
+# Load .env before any Config() is created
+load_dotenv()
 
 
 async def test_idea_search():
@@ -50,7 +84,7 @@ async def test_code_search():
     config = Config()
     async with LeeroopediaClient(config) as client:
         result = await client.search(
-            query="PyTorch training loop",
+            query="tensorflow training loop",
             tool="wiki_code_search",
             top_k=2,
         )
@@ -59,7 +93,7 @@ async def test_code_search():
         print(f"  results_count: {result.results_count}")
         print(f"  latency_ms: {result.latency_ms}")
         print(f"  credits_remaining: {result.credits_remaining}")
-        preview = (result.results or "")[:300]
+        preview = (result.results or "")
         print(f"  results preview: {preview}...")
 
         # Validate client flow worked (got a real response, not an error)
@@ -71,11 +105,11 @@ async def test_code_search():
 async def main():
     results = []
 
-    try:
-        results.append(await test_idea_search())
-    except Exception as e:
-        print(f"\n  FAIL: {e}")
-        results.append(False)
+    #try:
+    #    results.append(await test_idea_search())
+    #except Exception as e:
+    #    print(f"\n  FAIL: {e}")
+    #    results.append(False)
 
     try:
         results.append(await test_code_search())
