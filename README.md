@@ -78,7 +78,21 @@ Add to your Cursor settings (`.cursor/mcp.json`):
 
 The MCP server provides **8 agentic tools**. Each tool (except `get_page`) triggers an AI agent on the backend that searches the knowledge base from multiple angles, reads relevant pages, and synthesizes a structured response.
 
-### `consult_literature`
+| Tool | What it does |
+|------|-------------|
+| [`consult_literature`](#consult_literature) | Research a topic with synthesized, cited answers |
+| [`build_plan`](#build_plan) | Build a step-by-step ML execution plan |
+| [`review_plan`](#review_plan) | Review a plan against KB best practices |
+| [`verify_code_math`](#verify_code_math) | Verify code against authoritative math/ML descriptions |
+| [`diagnose_failure`](#diagnose_failure) | Diagnose training/deployment failures |
+| [`propose_hypothesis`](#propose_hypothesis) | Propose ranked next-step hypotheses |
+| [`query_hyperparameter_priors`](#query_hyperparameter_priors) | Query hyperparameter values, ranges & heuristics |
+| [`get_page`](#get_page) | Retrieve a specific KB page by ID |
+
+<details>
+<summary><b>consult_literature</b> — Research a topic like a librarian</summary>
+
+<br>
 
 Search the knowledge base like a research librarian. An AI agent synthesizes a consensus answer grounded in evidence, with `[PageID]` citations.
 
@@ -87,7 +101,12 @@ Search the knowledge base like a research librarian. An AI agent synthesizes a c
 | `query` | Yes | Research question or topic to investigate |
 | `context` | No | Additional context to guide the search |
 
-### `build_plan`
+</details>
+
+<details>
+<summary><b>build_plan</b> — Build a step-by-step ML execution plan</summary>
+
+<br>
 
 Build a step-by-step ML execution plan grounded in knowledge base evidence. Returns an overview, key specs, numbered steps, and validation criteria.
 
@@ -96,7 +115,12 @@ Build a step-by-step ML execution plan grounded in knowledge base evidence. Retu
 | `goal` | Yes | What you want to accomplish |
 | `constraints` | No | Constraints or requirements (e.g., hardware limits, time budget) |
 
-### `review_plan`
+</details>
+
+<details>
+<summary><b>review_plan</b> — Review a plan against best practices</summary>
+
+<br>
 
 Review a proposed ML plan against knowledge base best practices. Returns approvals, risks, and improvement suggestions.
 
@@ -105,7 +129,12 @@ Review a proposed ML plan against knowledge base best practices. Returns approva
 | `proposal` | Yes | The plan or proposal to review |
 | `goal` | Yes | The intended goal of the plan |
 
-### `verify_code_math`
+</details>
+
+<details>
+<summary><b>verify_code_math</b> — Verify code against ML/math concepts</summary>
+
+<br>
 
 Verify code correctness against authoritative ML/math concept descriptions. Returns a Pass/Fail verdict with analysis.
 
@@ -114,7 +143,12 @@ Verify code correctness against authoritative ML/math concept descriptions. Retu
 | `code_snippet` | Yes | The code to verify |
 | `concept_name` | Yes | The mathematical/ML concept being implemented |
 
-### `diagnose_failure`
+</details>
+
+<details>
+<summary><b>diagnose_failure</b> — Diagnose training/deployment failures</summary>
+
+<br>
 
 Diagnose ML training or deployment failures using knowledge base evidence. Returns diagnosis, fix steps, and prevention advice.
 
@@ -123,7 +157,12 @@ Diagnose ML training or deployment failures using knowledge base evidence. Retur
 | `symptoms` | Yes | Description of the failure symptoms |
 | `logs` | Yes | Relevant log output or error messages |
 
-### `propose_hypothesis`
+</details>
+
+<details>
+<summary><b>propose_hypothesis</b> — Propose ranked research hypotheses</summary>
+
+<br>
 
 Propose ranked research hypotheses grounded in knowledge base evidence. Returns ranked ideas with rationale and suggested experiments.
 
@@ -132,7 +171,12 @@ Propose ranked research hypotheses grounded in knowledge base evidence. Returns 
 | `current_status` | Yes | Where the project stands now |
 | `recent_experiments` | No | Description of recent experiments and their outcomes |
 
-### `query_hyperparameter_priors`
+</details>
+
+<details>
+<summary><b>query_hyperparameter_priors</b> — Query hyperparameter heuristics</summary>
+
+<br>
 
 Query documented hyperparameter values, ranges, and tuning heuristics. Returns a suggestion table with KB-grounded justification.
 
@@ -140,13 +184,20 @@ Query documented hyperparameter values, ranges, and tuning heuristics. Returns a
 |-----------|----------|-------------|
 | `query` | Yes | Hyperparameter question (e.g., "learning rate for LoRA fine-tuning Llama-3 8B") |
 
-### `get_page`
+</details>
+
+<details>
+<summary><b>get_page</b> — Retrieve a KB page by ID</summary>
+
+<br>
 
 Retrieve the full content of a specific knowledge base page by its exact ID. A direct lookup — no AI agent needed.
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
 | `page_id` | Yes | Exact page ID (e.g., `Workflow/QLoRA_Finetuning`, `Principle/LoRA_Rank_Selection`) |
+
+</details>
 
 ---
 
