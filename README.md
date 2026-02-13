@@ -80,7 +80,7 @@ The MCP server provides **8 agentic tools**. Each tool (except `get_page`) trigg
 
 | Tool | What it does |
 |------|-------------|
-| [`consult_literature`](#consult_literature) | Research a topic with synthesized, cited answers |
+| [`search_knowledge`](#search_knowledge) | Search the KB for framework docs, APIs, and best practices |
 | [`build_plan`](#build_plan) | Build a step-by-step ML execution plan |
 | [`review_plan`](#review_plan) | Review a plan against KB best practices |
 | [`verify_code_math`](#verify_code_math) | Verify code against authoritative math/ML descriptions |
@@ -90,16 +90,16 @@ The MCP server provides **8 agentic tools**. Each tool (except `get_page`) trigg
 | [`get_page`](#get_page) | Retrieve a specific KB page by ID |
 
 <details>
-<summary><b>consult_literature</b> — Research a topic like a librarian</summary>
+<summary><b>search_knowledge</b> — Search the knowledge base</summary>
 
 <br>
 
-Search the knowledge base like a research librarian. An AI agent synthesizes a consensus answer grounded in evidence, with `[PageID]` citations.
+Search the knowledge base for framework documentation, API references, config formats, and best practices. An AI agent synthesizes a grounded answer with `[PageID]` citations.
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
-| `query` | Yes | Research question or topic to investigate |
-| `context` | No | Additional context to guide the search |
+| `query` | Yes | What you want to find out |
+| `context` | No | Optional context about what you're building |
 
 </details>
 
@@ -205,7 +205,7 @@ Retrieve the full content of a specific knowledge base page by its exact ID. A d
 
 The MCP server uses an **async task-based API**:
 
-1. Your agent calls a tool (e.g., `consult_literature`)
+1. Your agent calls a tool (e.g., `search_knowledge`)
 2. The MCP client sends `POST /v1/search` with the tool name and arguments
 3. The backend queues the search task and returns a `task_id` immediately
 4. The client polls `GET /v1/search/task/{task_id}` with exponential backoff

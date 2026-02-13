@@ -1,8 +1,13 @@
 """
 MCP tool definitions for Leeroopedia agentic KG search.
 
-Provides 7 agentic tools that run Claude Code agents to search,
+Provides 8 agentic tools that run Claude Code agents to search,
 read, and synthesize structured responses from the knowledge base.
+
+The knowledge base covers 100+ ML/AI frameworks and libraries including
+vLLM, SGLang, DeepSpeed, Axolotl, ROLL, MNN, ColossalAI, TRL, PEFT,
+LLaMA-Factory, and many more. It contains architecture docs, API references,
+config formats, best practices, and implementation patterns.
 """
 
 from typing import Any, Dict, List
@@ -17,29 +22,34 @@ def get_tool_definitions() -> List[Dict[str, Any]]:
     """
     return [
         {
-            "name": "consult_literature",
-            "description": """Search the curated ML/AI knowledge base like a research librarian.
+            "name": "search_knowledge",
+            "description": """Search the knowledge base for framework documentation, API references, config formats, and best practices.
 
-An AI agent searches from multiple angles, reads relevant pages, and synthesizes
-a consensus answer grounded in knowledge base evidence.
+Covers a wide range of ML/AI frameworks, libraries, and tools with architecture docs,
+implementation patterns, configuration references, and troubleshooting guides.
 
-Use this tool when you need:
-- Foundational understanding of an ML/AI concept
-- Synthesis across multiple related topics
-- Verified, cited answers from a curated knowledge base
+Use this tool when you need to:
+- Understand how a framework, library, or API works before implementing
+- Look up config formats, data structures, or expected behavior
+- Learn about architecture, design patterns, or conventions of a project
+- Get verified information instead of guessing about framework internals
 
-Returns a synthesized summary with [PageID] citations, distinguishing
-between established consensus and emerging ideas.""",
+IMPORTANT: Use this tool BEFORE you start coding whenever the task involves
+a framework or library. It is much faster and more accurate than guessing.
+Call this tool multiple times in parallel with different queries to search
+from multiple angles at once.
+
+Returns a synthesized answer with [PageID] citations.""",
             "inputSchema": {
                 "type": "object",
                 "properties": {
                     "query": {
                         "type": "string",
-                        "description": "Research question or topic to investigate",
+                        "description": "What you want to find out (e.g., 'How does device_mapping work in ROLL?', 'What is the MNN backend selection config format?')",
                     },
                     "context": {
                         "type": "string",
-                        "description": "Optional additional context to guide the search",
+                        "description": "Optional context about what you're building (e.g., 'I am implementing a CLI tool that parses YAML configs')",
                     },
                 },
                 "required": ["query"],
@@ -47,27 +57,30 @@ between established consensus and emerging ideas.""",
         },
         {
             "name": "build_plan",
-            "description": """Build a step-by-step ML execution plan grounded in knowledge base evidence.
+            "description": """Get a structured implementation plan based on knowledge base documentation.
 
-An AI agent searches Workflows, Principles, Implementations, and Heuristics
-to construct a detailed plan for achieving the specified goal.
+Covers a wide range of ML/AI frameworks, libraries, and tools with architecture docs,
+implementation patterns, configuration references, and troubleshooting guides.
 
-Use this tool when you need:
-- A structured plan for an ML task (fine-tuning, training, deployment, etc.)
-- Step-by-step instructions grounded in verified practices
-- Specs, requirements, and validation criteria
+Returns an actionable plan with numbered steps, specs, and validation criteria —
+all based on how the framework actually works.
 
-Returns: overview, key specs, numbered steps, and tests/validation criteria.""",
+Use this tool when you:
+- Are about to implement something and want the correct sequence of steps
+- Need a plan informed by real framework documentation, not just general knowledge
+- Want validation criteria to verify your implementation against
+
+Returns: overview, key specs, numbered steps, and validation criteria.""",
             "inputSchema": {
                 "type": "object",
                 "properties": {
                     "goal": {
                         "type": "string",
-                        "description": "What you want to accomplish",
+                        "description": "What you want to accomplish (e.g., 'Implement YAML config parser for distributed RL experiment planning')",
                     },
                     "constraints": {
                         "type": "string",
-                        "description": "Optional constraints or requirements (e.g., hardware limits, time budget)",
+                        "description": "Optional constraints or requirements (e.g., 'Must validate GPU memory, support multi-node configs')",
                     },
                 },
                 "required": ["goal"],
@@ -75,23 +88,23 @@ Returns: overview, key specs, numbered steps, and tests/validation criteria.""",
         },
         {
             "name": "review_plan",
-            "description": """Review a proposed ML plan against knowledge base best practices.
+            "description": """Review your implementation plan against knowledge base documentation before coding.
 
-An AI agent searches for best practices, known pitfalls, and relevant heuristics
-to evaluate the proposed plan.
+Pass your proposed approach and the KB will check it against documented best practices,
+known pitfalls, and real framework behavior — catching mistakes before you write code.
 
-Use this tool when you need:
-- Validation of a plan before execution
-- Identification of risks and pitfalls
-- Improvement suggestions backed by KB evidence
+Use this tool when you:
+- Have a plan and want to validate it before executing
+- Want to catch incorrect assumptions about how a framework works
+- Need to know what pitfalls or edge cases to watch out for
 
-Returns: approvals (what looks good), risks, and suggestions.""",
+Returns: approvals (what looks good), risks, and improvement suggestions.""",
             "inputSchema": {
                 "type": "object",
                 "properties": {
                     "proposal": {
                         "type": "string",
-                        "description": "The plan or proposal to review",
+                        "description": "The plan or approach to review",
                     },
                     "goal": {
                         "type": "string",
@@ -103,15 +116,15 @@ Returns: approvals (what looks good), risks, and suggestions.""",
         },
         {
             "name": "verify_code_math",
-            "description": """Verify code correctness against authoritative ML/math concept descriptions.
+            "description": """Verify code correctness against knowledge base documentation and reference implementations.
 
-An AI agent searches for authoritative concept descriptions and reference
-implementations, then checks the provided code for mathematical correctness.
+Checks your code against documented behavior, reference implementations,
+and API contracts — catching errors before they become bugs.
 
 Use this tool when you need:
-- Verification that code correctly implements a mathematical concept
-- Detection of numerical or algorithmic errors
-- Comparison against reference implementations
+- Verification that code correctly implements a concept, algorithm, or API contract
+- Detection of logic errors, off-by-one mistakes, or wrong assumptions
+- Comparison against reference implementations or documented behavior
 
 Returns: verdict (Pass/Fail), analysis of discrepancies.""",
             "inputSchema": {
@@ -123,7 +136,7 @@ Returns: verdict (Pass/Fail), analysis of discrepancies.""",
                     },
                     "concept_name": {
                         "type": "string",
-                        "description": "The mathematical/ML concept being implemented",
+                        "description": "The concept, algorithm, or API being implemented (e.g., 'GPU memory allocation for vLLM', 'YAML config validation for ROLL')",
                     },
                 },
                 "required": ["code_snippet", "concept_name"],
@@ -131,15 +144,15 @@ Returns: verdict (Pass/Fail), analysis of discrepancies.""",
         },
         {
             "name": "diagnose_failure",
-            "description": """Diagnose ML training or deployment failures using knowledge base evidence.
+            "description": """Diagnose errors, failures, or unexpected behavior using knowledge base documentation.
 
-An AI agent searches Heuristics for known failure patterns and Environment
-pages for dependency or configuration issues.
+Checks your symptoms and logs against known failure patterns, common misconfigurations,
+and documented environment issues — finding root causes faster.
 
 Use this tool when you need:
-- Root cause analysis of training failures, NaN losses, OOM errors, etc.
-- Environment or dependency troubleshooting
-- Prevention advice based on documented patterns
+- Root cause analysis of errors, crashes, or unexpected behavior
+- Debugging configuration issues or dependency problems
+- Understanding why a framework behaves differently than expected
 
 Returns: diagnosis, fix steps, and prevention advice.""",
             "inputSchema": {
@@ -147,11 +160,11 @@ Returns: diagnosis, fix steps, and prevention advice.""",
                 "properties": {
                     "symptoms": {
                         "type": "string",
-                        "description": "Description of the failure symptoms",
+                        "description": "Description of the failure symptoms or unexpected behavior",
                     },
                     "logs": {
                         "type": "string",
-                        "description": "Relevant log output or error messages",
+                        "description": "Relevant log output, error messages, or stack traces",
                     },
                 },
                 "required": ["symptoms", "logs"],
@@ -159,27 +172,27 @@ Returns: diagnosis, fix steps, and prevention advice.""",
         },
         {
             "name": "propose_hypothesis",
-            "description": """Propose ranked research hypotheses grounded in knowledge base evidence.
+            "description": """Propose ranked approaches or solutions based on knowledge base documentation.
 
-An AI agent searches for alternative approaches, strategies, and relevant
-principles to suggest next steps for an ML project.
+When you're unsure how to proceed, this tool suggests alternative approaches
+ranked by fit — all backed by documented framework patterns and best practices.
 
 Use this tool when you need:
-- Ideas for what to try next in an ML project
-- Alternative approaches ranked by promise
-- Experiment suggestions backed by KB evidence
+- Ideas for how to implement or architect something
+- Alternative approaches ranked by fit for your use case
+- Suggestions backed by documented framework patterns and best practices
 
-Returns: ranked hypotheses with rationale and suggested experiments.""",
+Returns: ranked hypotheses with rationale and suggested next steps.""",
             "inputSchema": {
                 "type": "object",
                 "properties": {
                     "current_status": {
                         "type": "string",
-                        "description": "Where the project stands now",
+                        "description": "Where the project stands now and what you're trying to decide",
                     },
                     "recent_experiments": {
                         "type": "string",
-                        "description": "Optional description of recent experiments and their outcomes",
+                        "description": "Optional description of what you've tried so far and what happened",
                     },
                 },
                 "required": ["current_status"],
@@ -187,15 +200,15 @@ Returns: ranked hypotheses with rationale and suggested experiments.""",
         },
         {
             "name": "query_hyperparameter_priors",
-            "description": """Query documented hyperparameter values, ranges, and tuning heuristics.
+            "description": """Query documented configuration values, recommended ranges, and tuning heuristics.
 
-An AI agent searches the knowledge base for documented hyperparameter values,
-recommended ranges, and tuning strategies.
+Look up recommended parameter values, default settings, and tuning strategies
+for frameworks and libraries — based on documented best practices.
 
 Use this tool when you need:
-- Starting values for hyperparameters (learning rate, batch size, etc.)
-- Recommended ranges and tuning strategies
-- Context-specific suggestions (model size, task type, hardware)
+- Default or recommended values for framework configuration parameters
+- Recommended ranges and tuning strategies for any setting
+- Context-specific suggestions (hardware, model size, task type, scale)
 
 Returns: suggestion table with ranges and KB-grounded justification.""",
             "inputSchema": {
@@ -203,7 +216,7 @@ Returns: suggestion table with ranges and KB-grounded justification.""",
                 "properties": {
                     "query": {
                         "type": "string",
-                        "description": "Hyperparameter question or topic (e.g., 'learning rate for LoRA fine-tuning Llama-3 8B')",
+                        "description": "Configuration or parameter question (e.g., 'recommended GPU memory settings for vLLM serving', 'default batch size for DeepSpeed ZeRO-3')",
                     },
                 },
                 "required": ["query"],
@@ -213,13 +226,13 @@ Returns: suggestion table with ranges and KB-grounded justification.""",
             "name": "get_page",
             "description": """Retrieve the full content of a specific knowledge base page by its exact ID.
 
-A direct lookup — no AI agent needed. Returns the complete page content
-including type, overview, full content, domains, sources, and related pages.
+Other tools return [PageID] citations in their responses. If you need more detail
+from a cited page, call this tool with that page ID to get the full content.
 
 Use this tool when you:
-- Already know the exact page ID (e.g., from a previous search result citation)
-- Want to read a specific page without searching
-- Need the full content of a page referenced by another tool
+- See a [PageID] citation in a response and want the full page content
+- Need deeper detail than what was included in a synthesized answer
+- Want to read a specific page directly without searching
 
 Returns the page formatted as markdown, or an error if the page ID is not found.""",
             "inputSchema": {
@@ -237,7 +250,7 @@ Returns the page formatted as markdown, or an error if the page ID is not found.
 
 
 TOOL_NAMES = {
-    "consult_literature",
+    "search_knowledge",
     "build_plan",
     "review_plan",
     "verify_code_math",
