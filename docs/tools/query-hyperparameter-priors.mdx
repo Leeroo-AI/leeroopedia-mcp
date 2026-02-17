@@ -1,0 +1,27 @@
+---
+title: "query_hyperparameter_priors"
+description: "Query documented hyperparameter values, ranges, and tuning heuristics"
+---
+
+Query documented hyperparameter values, ranges, and tuning heuristics. Returns a suggestion table with KB-grounded justification.
+
+## When to Use
+
+- **Default values** — Look up recommended defaults for framework parameters
+- **Tuning ranges** — Get recommended ranges and tuning strategies
+- **Context-specific settings** — Suggestions tailored to hardware, model size, or task type
+
+## Parameters
+
+| Parameter | Required | Type | Description |
+|-----------|----------|------|-------------|
+| `query` | Yes | string | Hyperparameter question |
+
+## Example
+
+```
+Tool: query_hyperparameter_priors
+Query: "Learning rate and LoRA rank for QLoRA fine-tuning Llama-3 8B"
+```
+
+**Returns:** A suggestion table with recommended values, ranges, and KB-grounded justification for each parameter.

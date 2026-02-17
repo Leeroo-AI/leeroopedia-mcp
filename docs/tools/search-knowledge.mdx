@@ -1,0 +1,34 @@
+---
+title: "search_knowledge"
+description: "Search the knowledge base for framework docs, APIs, and best practices"
+---
+
+Search the knowledge base for framework documentation, API references, config formats, and best practices. An AI agent synthesizes a grounded answer with `[PageID]` citations.
+
+## When to Use
+
+- **Before coding** — Understand how a framework or library works before implementing
+- **Looking up config formats** — Data structures, expected behavior, API contracts
+- **Architecture questions** — Design patterns, conventions, internal workings
+- **Verified information** — Get documented facts instead of guessing
+
+<Tip>
+Call this tool **multiple times in parallel** with different queries to search from multiple angles at once. This is much faster than sequential searches.
+</Tip>
+
+## Parameters
+
+| Parameter | Required | Type | Description |
+|-----------|----------|------|-------------|
+| `query` | Yes | string | What you want to find out |
+| `context` | No | string | Optional context about what you're building |
+
+## Example
+
+```
+Tool: search_knowledge
+Query: "How does device_mapping work in ROLL?"
+Context: "I am implementing a distributed RL training setup"
+```
+
+**Returns:** A synthesized answer with `[PageID]` citations that can be followed up with [`get_page`](/docs/tools/get-page).

@@ -1,0 +1,39 @@
+---
+title: "Tools Overview"
+description: "All 8 agentic tools provided by the Leeroopedia MCP server"
+---
+
+The MCP server provides **8 tools**. Each tool (except `get_page`) triggers an AI agent on the backend that searches the knowledge base from multiple angles, reads relevant pages, and synthesizes a structured response.
+
+## Tool Summary
+
+| Tool | What it does |
+|------|-------------|
+| [`search_knowledge`](/docs/tools/search-knowledge) | Search the KB for framework docs, APIs, and best practices |
+| [`build_plan`](/docs/tools/build-plan) | Build a step-by-step ML execution plan |
+| [`review_plan`](/docs/tools/review-plan) | Review a plan against KB best practices |
+| [`verify_code_math`](/docs/tools/verify-code-math) | Verify code against authoritative math/ML descriptions |
+| [`diagnose_failure`](/docs/tools/diagnose-failure) | Diagnose training/deployment failures |
+| [`propose_hypothesis`](/docs/tools/propose-hypothesis) | Propose ranked next-step hypotheses |
+| [`query_hyperparameter_priors`](/docs/tools/query-hyperparameter-priors) | Query hyperparameter values, ranges & heuristics |
+| [`get_page`](/docs/tools/get-page) | Retrieve a specific KB page by ID |
+
+## How Agents Use Tools
+
+A typical workflow looks like this:
+
+1. **Search first** — Call `search_knowledge` to understand the problem space
+2. **Plan** — Call `build_plan` to get a structured implementation plan
+3. **Review** — Call `review_plan` to validate the plan against best practices
+4. **Implement** — Write the code
+5. **Verify** — Call `verify_code_math` to check correctness
+6. **Debug** — If something fails, call `diagnose_failure` with the error logs
+
+## Citations and `get_page`
+
+All tools return responses with `[PageID]` citations. These reference specific pages in the knowledge base. Use `get_page` with the cited ID to retrieve the full page content when you need more detail.
+
+Example page IDs:
+- `Workflow/QLoRA_Finetuning`
+- `Principle/LoRA_Rank_Selection`
+- `Heuristic/Huggingface_Alignment_handbook_QLoRA_Learning_Rate_Scaling`

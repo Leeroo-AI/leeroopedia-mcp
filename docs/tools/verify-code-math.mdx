@@ -1,0 +1,29 @@
+---
+title: "verify_code_math"
+description: "Verify code correctness against authoritative ML/math descriptions"
+---
+
+Verify code correctness against documented behavior, reference implementations, and API contracts. Returns a Pass/Fail verdict with analysis.
+
+## When to Use
+
+- **After writing critical code** — Verify it correctly implements a concept or algorithm
+- **Logic errors** — Detect off-by-one mistakes, wrong assumptions, or incorrect API usage
+- **Reference comparison** — Compare against documented behavior and reference implementations
+
+## Parameters
+
+| Parameter | Required | Type | Description |
+|-----------|----------|------|-------------|
+| `code_snippet` | Yes | string | The code to verify |
+| `concept_name` | Yes | string | The concept, algorithm, or API being implemented |
+
+## Example
+
+```
+Tool: verify_code_math
+Code: "lora_scaling = lora_alpha / lora_r"
+Concept: "LoRA scaling factor computation"
+```
+
+**Returns:** Verdict (Pass/Fail) and analysis of any discrepancies found.

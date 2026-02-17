@@ -31,7 +31,7 @@ leeroopedia-mcp = "leeroopedia_mcp.server:main"
 
 [project.urls]
 Homepage = "https://leeroopedia.com"
-Documentation = "https://leeroopedia.com/docs"
+Documentation = "https://docs.leeroopedia.com"
 
 [tool.setuptools.packages.find]
 where = ["."]

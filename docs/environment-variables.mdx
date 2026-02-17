@@ -1,0 +1,38 @@
+---
+title: "Environment Variables"
+description: "Configuration reference for the Leeroopedia MCP server"
+---
+
+All configuration is done via environment variables, typically set in the env block of your MCP config.
+
+## Variables
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| LEEROOPEDIA_API_KEY | Yes | -- | Your Leeroopedia API key |
+| LEEROOPEDIA_API_URL | No | https://api.leeroopedia.com | API endpoint URL |
+| LEEROOPEDIA_POLL_MAX_WAIT | No | 300 | Max seconds to wait for a search task |
+| LEEROOPEDIA_POLL_INTERVAL | No | 0.5 | Initial poll interval in seconds |
+
+## API Key
+
+Get your API key at [app.leeroopedia.com](https://app.leeroopedia.com):
+
+1. Create an account or log in
+2. Navigate to **Dashboard > API Keys**
+3. Copy your key (format: kpsk_...)
+
+## Poll Settings
+
+The MCP client uses an async task pattern with exponential backoff:
+
+- **LEEROOPEDIA_POLL_MAX_WAIT** -- Increase if searches frequently time out
+- **LEEROOPEDIA_POLL_INTERVAL** -- The initial poll interval. Grows by 1.5x, capped at 5s
+
+<Warning>
+Setting LEEROOPEDIA_POLL_MAX_WAIT too low may cause timeouts on complex queries. The default of 300 seconds works well for most use cases.
+</Warning>
+
+## Custom API URL
+
+For self-hosted or staging environments, override the API URL by setting LEEROOPEDIA_API_URL in your MCP config env block.

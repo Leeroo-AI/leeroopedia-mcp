@@ -1,0 +1,29 @@
+---
+title: "diagnose_failure"
+description: "Diagnose training/deployment failures using knowledge base evidence"
+---
+
+Diagnose ML training or deployment failures using knowledge base evidence. Returns diagnosis, fix steps, and prevention advice.
+
+## When to Use
+
+- **Error diagnosis** — Root cause analysis of errors, crashes, or unexpected behavior
+- **Config issues** — Debugging configuration problems or dependency conflicts
+- **Unexpected behavior** — Understanding why a framework behaves differently than expected
+
+## Parameters
+
+| Parameter | Required | Type | Description |
+|-----------|----------|------|-------------|
+| `symptoms` | Yes | string | Description of the failure symptoms |
+| `logs` | Yes | string | Relevant log output or error messages |
+
+## Example
+
+```
+Tool: diagnose_failure
+Symptoms: "QLoRA training OOM on A100 40GB with 7B model, batch size 4"
+Logs: "RuntimeError: CUDA out of memory. Tried to allocate 2.00 GiB..."
+```
+
+**Returns:** Diagnosis (likely cause), fix steps (e.g., enable gradient checkpointing, reduce batch size), and prevention advice.

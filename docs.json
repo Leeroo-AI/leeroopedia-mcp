@@ -1,0 +1,69 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "maple",
+  "name": "Leeroopedia MCP",
+
+  "colors": {
+    "primary": "#2563EB",
+    "light": "#DBEAFE",
+    "dark": "#1E40AF"
+  },
+
+  "favicon": "https://avatars.githubusercontent.com/u/157533604?s=400&u=79405674fcaf5cc16c55f2b9548a6ebb17fdcfa9&v=4",
+
+  "logo": {
+    "light": "https://avatars.githubusercontent.com/u/157533604?s=400&u=79405674fcaf5cc16c55f2b9548a6ebb17fdcfa9&v=4",
+    "dark": "https://avatars.githubusercontent.com/u/157533604?s=400&u=79405674fcaf5cc16c55f2b9548a6ebb17fdcfa9&v=4"
+  },
+
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "docs/index",
+              "docs/quickstart"
+            ]
+          },
+          {
+            "group": "Tools",
+            "pages": [
+              "docs/tools/overview",
+              "docs/tools/search-knowledge",
+              "docs/tools/build-plan",
+              "docs/tools/review-plan",
+              "docs/tools/verify-code-math",
+              "docs/tools/diagnose-failure",
+              "docs/tools/propose-hypothesis",
+              "docs/tools/query-hyperparameter-priors",
+              "docs/tools/get-page"
+            ]
+          },
+          {
+            "group": "Architecture",
+            "pages": [
+              "docs/how-it-works",
+              "docs/environment-variables"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "docs/troubleshooting"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  "footer": {
+    "socials": {
+      "github": "https://github.com/Leeroo-AI/leeroopedia-mcp",
+      "discord": "https://discord.gg/hqVbPNNEZM"
+    }
+  }
+}

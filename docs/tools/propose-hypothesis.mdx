@@ -1,0 +1,30 @@
+---
+title: "propose_hypothesis"
+description: "Propose ranked approaches backed by knowledge base evidence"
+---
+
+Propose ranked research hypotheses grounded in knowledge base evidence. Returns ranked ideas with rationale and suggested experiments.
+
+## When to Use
+
+- **Design decisions** — Choosing between architectures, strategies, or approaches
+- **Alternative approaches** — Get ranked options backed by documented patterns
+- **Next steps** — When you're unsure how to proceed
+
+## Parameters
+
+| Parameter | Required | Type | Description |
+|-----------|----------|------|-------------|
+| `current_status` | Yes | string | Where the project stands now |
+| `recent_experiments` | No | string | Description of recent experiments and their outcomes |
+
+## Example
+
+```
+Tool: propose_hypothesis
+Current Status: "Building a RAG pipeline for technical docs. Naive retrieval gives 
+                 low recall on multi-hop questions."
+Recent Experiments: "Tried increasing chunk overlap to 200 tokens — marginal improvement."
+```
+
+**Returns:** Ranked hypotheses (e.g., try hybrid search, add query expansion, use HyDE) with rationale and suggested next steps.

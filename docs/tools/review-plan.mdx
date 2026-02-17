@@ -1,0 +1,30 @@
+---
+title: "review_plan"
+description: "Review a plan against knowledge base best practices"
+---
+
+Review a proposed ML plan against knowledge base best practices. Returns approvals, risks, and improvement suggestions.
+
+## When to Use
+
+- **Before executing a plan** — Validate your approach before writing code
+- **Catching assumptions** — Find incorrect assumptions about how a framework works
+- **Risk assessment** — Know what pitfalls or edge cases to watch out for
+
+## Parameters
+
+| Parameter | Required | Type | Description |
+|-----------|----------|------|-------------|
+| `proposal` | Yes | string | The plan or proposal to review |
+| `goal` | Yes | string | The intended goal of the plan |
+
+## Example
+
+```
+Tool: review_plan
+Proposal: "1. Load model in 4-bit NF4. 2. Apply LoRA rank 64 to all linear layers. 
+           3. Train with lr=2e-5 for 3 epochs. 4. Merge and save."
+Goal: "QLoRA fine-tuning of Llama-3.1-8B for instruction following"
+```
+
+**Returns:** Approvals (what looks good), risks (e.g., learning rate too low for QLoRA), and improvement suggestions.

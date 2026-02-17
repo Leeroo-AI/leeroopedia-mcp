@@ -27,6 +27,10 @@ This MCP server lets AI coding agents (Claude Code, Cursor) search that knowledg
 
 ### 1. Install
 
+No installation needed if you have [uv](https://docs.astral.sh/uv/). The MCP configs below use `uvx` to auto-download and run.
+
+**Alternative** (manual install):
+
 ```bash
 pip install leeroopedia-mcp
 ```
@@ -46,7 +50,8 @@ Add to your `~/.claude.json` or project `.mcp.json`:
 {
   "mcpServers": {
     "leeroopedia": {
-      "command": "leeroopedia-mcp",
+      "command": "uvx",
+      "args": ["leeroopedia-mcp"],
       "env": {
         "LEEROOPEDIA_API_KEY": "kpsk_your_key_here"
       }
@@ -63,7 +68,8 @@ Add to your Cursor settings (`.cursor/mcp.json`):
 {
   "mcpServers": {
     "leeroopedia": {
-      "command": "leeroopedia-mcp",
+      "command": "uvx",
+      "args": ["leeroopedia-mcp"],
       "env": {
         "LEEROOPEDIA_API_KEY": "kpsk_your_key_here"
       }
@@ -239,7 +245,8 @@ Set your API key in the MCP config:
 {
   "mcpServers": {
     "leeroopedia": {
-      "command": "leeroopedia-mcp",
+      "command": "uvx",
+      "args": ["leeroopedia-mcp"],
       "env": {
         "LEEROOPEDIA_API_KEY": "kpsk_..."
       }

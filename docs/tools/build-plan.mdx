@@ -1,0 +1,29 @@
+---
+title: "build_plan"
+description: "Build a step-by-step ML execution plan grounded in knowledge base evidence"
+---
+
+Build a step-by-step ML execution plan grounded in knowledge base documentation. Returns an overview, key specs, numbered steps, and validation criteria.
+
+## When to Use
+
+- **Starting implementation** — Get the correct sequence of steps before writing code
+- **Framework-specific plans** — Plans informed by real documentation, not just general knowledge
+- **Validation criteria** — Know what to check to verify your implementation
+
+## Parameters
+
+| Parameter | Required | Type | Description |
+|-----------|----------|------|-------------|
+| `goal` | Yes | string | What you want to accomplish |
+| `constraints` | No | string | Constraints or requirements (e.g., hardware limits, time budget) |
+
+## Example
+
+```
+Tool: build_plan
+Goal: "Implement QLoRA fine-tuning for Llama-3.1-8B on a single A100"
+Constraints: "Must fit in 40GB VRAM, target loss < 0.5"
+```
+
+**Returns:** Overview, key specs, numbered steps, and validation criteria — all grounded in KB documentation.

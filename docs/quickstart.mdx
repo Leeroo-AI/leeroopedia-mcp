@@ -1,0 +1,123 @@
+---
+title: "Quickstart"
+description: "Get Leeroopedia MCP running in 2 minutes"
+---
+
+## Prerequisites
+
+- Python 3.10+
+- [uv](https://docs.astral.sh/uv/) (recommended) or pip
+- A Leeroopedia API key
+
+## Setup
+
+<Steps>
+  <Step title="Get your API key">
+    1. Go to [app.leeroopedia.com](https://app.leeroopedia.com)
+    2. Create an account or log in
+    3. Navigate to **Dashboard > API Keys**
+    4. Copy your API key (format: `kpsk_...`)
+  </Step>
+
+  <Step title="Configure your AI agent">
+    Choose your agent and add the config:
+
+    <Tabs>
+      <Tab title="Claude Code">
+        Add to your `~/.claude.json` or project `.mcp.json`:
+
+        ```json
+        {
+          "mcpServers": {
+            "leeroopedia": {
+              "command": "uvx",
+              "args": ["leeroopedia-mcp"],
+              "env": {
+                "LEEROOPEDIA_API_KEY": "kpsk_your_key_here"
+              }
+            }
+          }
+        }
+        ```
+      </Tab>
+      <Tab title="Cursor">
+        Add to your Cursor settings (`.cursor/mcp.json`):
+
+        ```json
+        {
+          "mcpServers": {
+            "leeroopedia": {
+              "command": "uvx",
+              "args": ["leeroopedia-mcp"],
+              "env": {
+                "LEEROOPEDIA_API_KEY": "kpsk_your_key_here"
+              }
+            }
+          }
+        }
+        ```
+      </Tab>
+      <Tab title="pip (alternative)">
+        If you don't have `uv`, install the package manually first:
+
+        ```bash
+        pip install leeroopedia-mcp
+        ```
+
+        Then use `leeroopedia-mcp` as the command directly:
+
+        ```json
+        {
+          "mcpServers": {
+            "leeroopedia": {
+              "command": "leeroopedia-mcp",
+              "env": {
+                "LEEROOPEDIA_API_KEY": "kpsk_your_key_here"
+              }
+            }
+          }
+        }
+        ```
+      </Tab>
+    </Tabs>
+
+    <Note>
+      `uvx` auto-downloads and runs the package — no `pip install` needed. It also auto-updates to the latest version.
+    </Note>
+  </Step>
+
+  <Step title="Verify the connection">
+    **Claude Code:** Run `claude mcp list` in your project directory. You should see:
+
+    ```
+    leeroopedia: uvx leeroopedia-mcp - ✓ Connected
+    ```
+
+    **Cursor:** Open the MCP panel in settings and confirm the leeroopedia server shows a green status.
+  </Step>
+</Steps>
+
+## Try It Out
+
+Ask your AI agent something like:
+
+> "Use leeroopedia to search for best practices for QLoRA fine-tuning."
+
+The agent will call `search_knowledge` and return a synthesized answer with `[PageID]` citations.
+
+You can then follow up with:
+
+> "Get the full page for [PageID] that was cited."
+
+The agent will call `get_page` to retrieve the full content of that knowledge base page.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Tools Overview" icon="wrench" href="/docs/tools/overview">
+    Learn about all 8 available tools
+  </Card>
+  <Card title="How It Works" icon="gears" href="/docs/how-it-works">
+    Understand the architecture
+  </Card>
+</CardGroup>

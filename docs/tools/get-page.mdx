@@ -1,0 +1,41 @@
+---
+title: "get_page"
+description: "Retrieve a specific knowledge base page by its exact ID"
+---
+
+Retrieve the full content of a specific knowledge base page by its exact ID. A direct lookup — no AI agent needed.
+
+## When to Use
+
+- **Follow up on citations** — Other tools return `[PageID]` citations in their responses. Use `get_page` to get the full page.
+- **Deeper detail** — When a synthesized answer isn't enough and you need the complete reference
+- **Direct access** — Read a specific page you already know the ID of
+
+## Parameters
+
+| Parameter | Required | Type | Description |
+|-----------|----------|------|-------------|
+| `page_id` | Yes | string | Exact page ID to retrieve |
+
+## Example
+
+```
+Tool: get_page
+Page ID: "Workflow/QLoRA_Finetuning"
+```
+
+**Returns:** The full page content formatted as markdown.
+
+## Common Page ID Formats
+
+Page IDs follow a wiki-like structure:
+
+| Prefix | Meaning | Example |
+|--------|---------|---------|
+| `Workflow/` | Step-by-step workflows | `Workflow/QLoRA_Finetuning` |
+| `Principle/` | Core concepts and principles | `Principle/LoRA_Rank_Selection` |
+| `Heuristic/` | Practical heuristics and rules of thumb | `Heuristic/Huggingface_Alignment_handbook_QLoRA_Learning_Rate_Scaling` |
+
+<Note>
+If a page ID is not found, the tool returns an error message. Double-check that you're using the exact ID from the citation.
+</Note>

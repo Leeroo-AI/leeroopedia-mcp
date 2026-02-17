@@ -1,0 +1,49 @@
+---
+title: "Troubleshooting"
+description: "Common issues and how to fix them"
+---
+
+## Common Errors
+
+<Accordion title="LEEROOPEDIA_API_KEY is required">
+  Your API key is missing from the MCP configuration. Make sure it is set in the env block of your MCP config. Get your API key at [app.leeroopedia.com](https://app.leeroopedia.com).
+</Accordion>
+
+<Accordion title="Invalid or revoked API key (401)">
+  Your API key is not valid. This can happen if the key was copied incorrectly or was revoked.
+
+  **Fix:** Go to [app.leeroopedia.com](https://app.leeroopedia.com), re-copy your key, and update your MCP config.
+</Accordion>
+
+<Accordion title="Insufficient credits (402)">
+  Your account has run out of search credits.
+
+  **Fix:** Purchase more credits at [app.leeroopedia.com](https://app.leeroopedia.com).
+</Accordion>
+
+<Accordion title="Rate limit exceeded (429)">
+  You have made too many requests in a short period.
+
+  **Fix:** Wait for the retry period indicated in the error message.
+</Accordion>
+
+<Accordion title="Search timed out (504)">
+  The search task did not complete within the polling window (default: 300 seconds).
+
+  **Fix:** Try a more specific query, or increase LEEROOPEDIA_POLL_MAX_WAIT.
+</Accordion>
+
+## Connection Issues
+
+<Accordion title="MCP server not starting">
+  If Claude Code or Cursor cannot connect to the MCP server, check that uvx is installed, test the server directly with LEEROOPEDIA_API_KEY set, and run claude mcp list to verify connectivity.
+</Accordion>
+
+<Accordion title="Tool requires permission approval">
+  In Claude Code non-interactive mode, MCP tools need explicit permission. Use --allowedTools or --dangerously-skip-permissions. In interactive mode, a prompt appears automatically.
+</Accordion>
+
+## Getting Help
+
+- **Discord:** [Join our community](https://discord.gg/hqVbPNNEZM)
+- **GitHub Issues:** [Report a bug](https://github.com/Leeroo-AI/leeroopedia-mcp/issues)
