@@ -1,7 +1,7 @@
 # Leeroopedia MCP Server
 
 <p align="center">
-  <strong>Give your AI coding agent access to curated ML/AI knowledge.</strong>
+  <strong>Give your AI coding agent access to best-practices of ML and AI.</strong>
 </p>
 
 <p align="center">
@@ -13,13 +13,21 @@
 
 ---
 
+> **$20 free credit on sign-up** : that's plenty of searches, plans, and diagnoses. Skip the guesswork on your next fine-tuning run or inference deployment. No credit card required. [Get your API key →](https://app.leeroopedia.com)
+
+---
+
 ## What is Leeroopedia?
 
-**Your ML & Data Knowledge Wiki.** Learnt by AI, built by AI, for AI. A centralized playbook of best practices and expert-level knowledge for Machine Learning and Data domains.
+**Your ML & Data Knowledge Wiki.** Learnt by AI, built by AI, for AI. A centralized playbook of best practices and expert-level knowledge for Machine Learning and Data domains, covering 1000+ frameworks and libraries, vLLM, SGLang, DeepSpeed, Megatron-LM, FlashAttention, Triton, llama.cpp, Unsloth, Axolotl, LLaMA-Factory, TRL, PEFT, ColossalAI, LangChain, LlamaIndex, and many more.
 
-Browse the full knowledge base at [leeroopedia.com](https://leeroopedia.com). Apply for early beta access.
+This MCP server plugs that knowledge base directly into your AI coding agent (Claude Code, Cursor). Whether you're fine-tuning LLMs, optimizing inference serving, building agents, or wiring up RAG pipelines; stop guessing at framework internals, wrestling with cryptic CUDA errors, or wasting GPU hours on wrong hyperparameters. Your agent can **search docs**, **build plans**, **review your approach**, **verify code against reference implementations**, **diagnose training failures**, **propose what to try next**, and **look up battle-tested hyperparameter defaults**. Every answer cites real KB pages you can drill into.
 
-This MCP server lets AI coding agents (Claude Code, Cursor) search that knowledge base directly while they work — no copy-pasting needed.
+Browse the full knowledge base at [leeroopedia.com](https://leeroopedia.com).
+
+### Want to go end-to-end?
+
+Leeroopedia gives your agent the **knowledge**. [**Kapso**](https://github.com/leeroo-ai/kapso) gives it the **ability to act on it** : research, experiment, and deploy. Together: a complete ML/AI engineer agent.
 
 ---
 
@@ -84,23 +92,13 @@ Add to your Cursor settings (`.cursor/mcp.json`):
 
 The MCP server provides **8 agentic tools**. Each tool (except `get_page`) triggers an AI agent on the backend that searches the knowledge base from multiple angles, reads relevant pages, and synthesizes a structured response.
 
-| Tool | What it does |
-|------|-------------|
-| [`search_knowledge`](#search_knowledge) | Search the KB for framework docs, APIs, and best practices |
-| [`build_plan`](#build_plan) | Build a step-by-step ML execution plan |
-| [`review_plan`](#review_plan) | Review a plan against KB best practices |
-| [`verify_code_math`](#verify_code_math) | Verify code against authoritative math/ML descriptions |
-| [`diagnose_failure`](#diagnose_failure) | Diagnose training/deployment failures |
-| [`propose_hypothesis`](#propose_hypothesis) | Propose ranked next-step hypotheses |
-| [`query_hyperparameter_priors`](#query_hyperparameter_priors) | Query hyperparameter values, ranges & heuristics |
-| [`get_page`](#get_page) | Retrieve a specific KB page by ID |
+### Search & Retrieve
 
 <details>
-<summary><b>search_knowledge</b> — Search the knowledge base</summary>
-
+<summary><b><code>search_knowledge</code></b> — Search the KB for framework docs, APIs, and best practices</summary>
 <br>
 
-Search the knowledge base for framework documentation, API references, config formats, and best practices. An AI agent synthesizes a grounded answer with `[PageID]` citations.
+An AI agent synthesizes a grounded answer with `[PageID]` citations.
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
@@ -110,11 +108,24 @@ Search the knowledge base for framework documentation, API references, config fo
 </details>
 
 <details>
-<summary><b>build_plan</b> — Build a step-by-step ML execution plan</summary>
-
+<summary><b><code>get_page</code></b> — Retrieve a specific KB page by ID</summary>
 <br>
 
-Build a step-by-step ML execution plan grounded in knowledge base evidence. Returns an overview, key specs, numbered steps, and validation criteria.
+Direct lookup — no AI agent needed. Use this to drill into `[PageID]` citations from other tools.
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `page_id` | Yes | Exact page ID (e.g., `Workflow/QLoRA_Finetuning`, `Principle/LoRA_Rank_Selection`) |
+
+</details>
+
+### Plan & Review
+
+<details>
+<summary><b><code>build_plan</code></b> — Build a step-by-step ML execution plan</summary>
+<br>
+
+Returns an overview, key specs, numbered steps, and validation criteria — all grounded in KB evidence.
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
@@ -124,11 +135,10 @@ Build a step-by-step ML execution plan grounded in knowledge base evidence. Retu
 </details>
 
 <details>
-<summary><b>review_plan</b> — Review a plan against best practices</summary>
-
+<summary><b><code>review_plan</code></b> — Review a plan against KB best practices</summary>
 <br>
 
-Review a proposed ML plan against knowledge base best practices. Returns approvals, risks, and improvement suggestions.
+Catches incorrect assumptions before you write code. Returns approvals, risks, and improvement suggestions.
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
@@ -137,12 +147,13 @@ Review a proposed ML plan against knowledge base best practices. Returns approva
 
 </details>
 
-<details>
-<summary><b>verify_code_math</b> — Verify code against ML/math concepts</summary>
+### Verify & Debug
 
+<details>
+<summary><b><code>verify_code_math</code></b> — Verify code against ML/math concepts</summary>
 <br>
 
-Verify code correctness against authoritative ML/math concept descriptions. Returns a Pass/Fail verdict with analysis.
+Checks your code against documented behavior and reference implementations. Returns a Pass/Fail verdict with analysis.
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
@@ -152,11 +163,10 @@ Verify code correctness against authoritative ML/math concept descriptions. Retu
 </details>
 
 <details>
-<summary><b>diagnose_failure</b> — Diagnose training/deployment failures</summary>
-
+<summary><b><code>diagnose_failure</code></b> — Diagnose training/deployment failures</summary>
 <br>
 
-Diagnose ML training or deployment failures using knowledge base evidence. Returns diagnosis, fix steps, and prevention advice.
+Matches symptoms against known failure patterns and misconfigurations. Returns diagnosis, fix steps, and prevention advice.
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
@@ -165,12 +175,13 @@ Diagnose ML training or deployment failures using knowledge base evidence. Retur
 
 </details>
 
-<details>
-<summary><b>propose_hypothesis</b> — Propose ranked research hypotheses</summary>
+### Explore & Optimize
 
+<details>
+<summary><b><code>propose_hypothesis</code></b> — Propose ranked next-step hypotheses</summary>
 <br>
 
-Propose ranked research hypotheses grounded in knowledge base evidence. Returns ranked ideas with rationale and suggested experiments.
+When you're stuck, get alternative approaches ranked by fit — backed by documented patterns. Returns ranked ideas with rationale and suggested experiments.
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
@@ -180,11 +191,10 @@ Propose ranked research hypotheses grounded in knowledge base evidence. Returns 
 </details>
 
 <details>
-<summary><b>query_hyperparameter_priors</b> — Query hyperparameter heuristics</summary>
-
+<summary><b><code>query_hyperparameter_priors</code></b> — Query hyperparameter values, ranges & heuristics</summary>
 <br>
 
-Query documented hyperparameter values, ranges, and tuning heuristics. Returns a suggestion table with KB-grounded justification.
+Start with battle-tested defaults instead of guessing. Returns a suggestion table with KB-grounded justification.
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
@@ -192,32 +202,7 @@ Query documented hyperparameter values, ranges, and tuning heuristics. Returns a
 
 </details>
 
-<details>
-<summary><b>get_page</b> — Retrieve a KB page by ID</summary>
-
-<br>
-
-Retrieve the full content of a specific knowledge base page by its exact ID. A direct lookup — no AI agent needed.
-
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `page_id` | Yes | Exact page ID (e.g., `Workflow/QLoRA_Finetuning`, `Principle/LoRA_Rank_Selection`) |
-
-</details>
-
 ---
-
-## How It Works
-
-The MCP server uses an **async task-based API**:
-
-1. Your agent calls a tool (e.g., `search_knowledge`)
-2. The MCP client sends `POST /v1/search` with the tool name and arguments
-3. The backend queues the search task and returns a `task_id` immediately
-4. The client polls `GET /v1/search/task/{task_id}` with exponential backoff
-5. When the task completes, results are returned to your agent
-
-This architecture allows the backend AI agents to take the time they need for thorough research without blocking or timing out.
 
 ---
 
@@ -232,46 +217,15 @@ This architecture allows the backend AI agents to take the time they need for th
 
 ---
 
-<details>
-<summary><strong>Troubleshooting</strong></summary>
+## Troubleshooting
 
-<br>
-
-**"LEEROOPEDIA_API_KEY is required"**
-
-Set your API key in the MCP config:
-
-```json
-{
-  "mcpServers": {
-    "leeroopedia": {
-      "command": "uvx",
-      "args": ["leeroopedia-mcp"],
-      "env": {
-        "LEEROOPEDIA_API_KEY": "kpsk_..."
-      }
-    }
-  }
-}
-```
-
-**"Invalid or revoked API key" (401)**
-
-Double-check your API key at [app.leeroopedia.com](https://app.leeroopedia.com). Re-copy if needed.
-
-**"Insufficient credits" (402)**
-
-Purchase more credits at [app.leeroopedia.com](https://app.leeroopedia.com).
-
-**"Rate limit exceeded" (429)**
-
-Wait for the retry period before making more requests.
-
-**"Search timed out" (504)**
-
-The search task didn't complete within the poll window. Try a more specific query, or increase `LEEROOPEDIA_POLL_MAX_WAIT`.
-
-</details>
+| Error | Fix |
+|-------|-----|
+| `LEEROOPEDIA_API_KEY is required` | Set `LEEROOPEDIA_API_KEY` in your MCP config `env` block |
+| `Invalid or revoked API key` (401) | Re-copy your key from [app.leeroopedia.com](https://app.leeroopedia.com) |
+| `Insufficient credits` (402) | Purchase more credits at [app.leeroopedia.com](https://app.leeroopedia.com) |
+| `Rate limit exceeded` (429) | Wait for the retry period before making more requests |
+| `Search timed out` (504) | Try a more specific query, or increase `LEEROOPEDIA_POLL_MAX_WAIT` |
 
 ---
 

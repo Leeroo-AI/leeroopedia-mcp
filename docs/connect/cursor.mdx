@@ -1,0 +1,83 @@
+---
+title: "Cursor"
+description: "Connect Leeroopedia MCP to Cursor"
+---
+
+## Prerequisites
+
+- [uv](https://docs.astral.sh/uv/) (recommended) or pip
+- A Leeroopedia API key — get one at [app.leeroopedia.com](https://app.leeroopedia.com)
+
+## Setup
+
+<Steps>
+  <Step title="Add MCP config">
+    Add to your Cursor settings at `.cursor/mcp.json`:
+
+    ```json
+    {
+      "mcpServers": {
+        "leeroopedia": {
+          "command": "uvx",
+          "args": ["leeroopedia-mcp"],
+          "env": {
+            "LEEROOPEDIA_API_KEY": "kpsk_your_key_here"
+          }
+        }
+      }
+    }
+    ```
+
+    <Note>
+      `uvx` auto-downloads and runs the package — no `pip install` needed. It also auto-updates to the latest version.
+    </Note>
+
+    If you don't have `uv`, install manually first:
+
+    ```bash
+    pip install leeroopedia-mcp
+    ```
+
+    Then use `leeroopedia-mcp` as the command (without `args`):
+
+    ```json
+    {
+      "mcpServers": {
+        "leeroopedia": {
+          "command": "leeroopedia-mcp",
+          "env": {
+            "LEEROOPEDIA_API_KEY": "kpsk_your_key_here"
+          }
+        }
+      }
+    }
+    ```
+  </Step>
+
+  <Step title="Verify the connection">
+    Open the MCP panel in Cursor settings and confirm the **leeroopedia** server shows a green status.
+  </Step>
+</Steps>
+
+## Try It Out
+
+Ask Cursor something like:
+
+> "Use leeroopedia to search for best practices for QLoRA fine-tuning."
+
+The agent will call `search_knowledge` and return a synthesized answer with `[PageID]` citations.
+
+You can then follow up with:
+
+> "Get the full page for [PageID] that was cited."
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Tools Overview" icon="wrench" href="/docs/tools/overview">
+    Learn about all 8 available tools
+  </Card>
+  <Card title="Environment Variables" icon="gear" href="/docs/environment-variables">
+    Configuration reference
+  </Card>
+</CardGroup>

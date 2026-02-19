@@ -5,35 +5,46 @@ description: "All 8 agentic tools provided by the Leeroopedia MCP server"
 
 The MCP server provides **8 tools**. Each tool (except `get_page`) triggers an AI agent on the backend that searches the knowledge base from multiple angles, reads relevant pages, and synthesizes a structured response.
 
-## Tool Summary
+### Search & Retrieve
 
-| Tool | What it does |
-|------|-------------|
-| [`search_knowledge`](/docs/tools/search-knowledge) | Search the KB for framework docs, APIs, and best practices |
-| [`build_plan`](/docs/tools/build-plan) | Build a step-by-step ML execution plan |
-| [`review_plan`](/docs/tools/review-plan) | Review a plan against KB best practices |
-| [`verify_code_math`](/docs/tools/verify-code-math) | Verify code against authoritative math/ML descriptions |
-| [`diagnose_failure`](/docs/tools/diagnose-failure) | Diagnose training/deployment failures |
-| [`propose_hypothesis`](/docs/tools/propose-hypothesis) | Propose ranked next-step hypotheses |
-| [`query_hyperparameter_priors`](/docs/tools/query-hyperparameter-priors) | Query hyperparameter values, ranges & heuristics |
-| [`get_page`](/docs/tools/get-page) | Retrieve a specific KB page by ID |
+<CardGroup cols={2}>
+  <Card title="search_knowledge" icon="magnifying-glass" href="/docs/tools/search-knowledge">
+    Search the KB for framework docs, APIs, and best practices
+  </Card>
+  <Card title="get_page" icon="file-lines" href="/docs/tools/get-page">
+    Retrieve a specific KB page by ID
+  </Card>
+</CardGroup>
 
-## How Agents Use Tools
+### Plan & Review
 
-A typical workflow looks like this:
+<CardGroup cols={2}>
+  <Card title="build_plan" icon="list-check" href="/docs/tools/build-plan">
+    Build a step-by-step ML execution plan
+  </Card>
+  <Card title="review_plan" icon="clipboard-check" href="/docs/tools/review-plan">
+    Review a plan against KB best practices
+  </Card>
+</CardGroup>
 
-1. **Search first** — Call `search_knowledge` to understand the problem space
-2. **Plan** — Call `build_plan` to get a structured implementation plan
-3. **Review** — Call `review_plan` to validate the plan against best practices
-4. **Implement** — Write the code
-5. **Verify** — Call `verify_code_math` to check correctness
-6. **Debug** — If something fails, call `diagnose_failure` with the error logs
+### Verify & Debug
 
-## Citations and `get_page`
+<CardGroup cols={2}>
+  <Card title="verify_code_math" icon="code" href="/docs/tools/verify-code-math">
+    Verify code against authoritative ML/math descriptions
+  </Card>
+  <Card title="diagnose_failure" icon="stethoscope" href="/docs/tools/diagnose-failure">
+    Diagnose training/deployment failures
+  </Card>
+</CardGroup>
 
-All tools return responses with `[PageID]` citations. These reference specific pages in the knowledge base. Use `get_page` with the cited ID to retrieve the full page content when you need more detail.
+### Explore & Optimize
 
-Example page IDs:
-- `Workflow/QLoRA_Finetuning`
-- `Principle/LoRA_Rank_Selection`
-- `Heuristic/Huggingface_Alignment_handbook_QLoRA_Learning_Rate_Scaling`
+<CardGroup cols={2}>
+  <Card title="propose_hypothesis" icon="lightbulb" href="/docs/tools/propose-hypothesis">
+    Propose ranked next-step hypotheses
+  </Card>
+  <Card title="query_hyperparameter_priors" icon="sliders" href="/docs/tools/query-hyperparameter-priors">
+    Query hyperparameter values, ranges & heuristics
+  </Card>
+</CardGroup>

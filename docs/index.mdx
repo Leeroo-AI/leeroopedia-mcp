@@ -3,83 +3,59 @@ title: "Leeroopedia MCP"
 description: "Give your AI coding agent access to curated ML/AI knowledge"
 ---
 
+<Tip>**$20 free credit on sign-up** — that's plenty of searches, plans, and diagnoses. Skip the guesswork on your next fine-tuning run or inference deployment. No credit card required. [Get your API key →](https://app.leeroopedia.com)</Tip>
+
 ## What is Leeroopedia?
 
 **Your ML & Data Knowledge Wiki.** Learnt by AI, built by AI, for AI. A centralized playbook of best practices and expert-level knowledge for Machine Learning and Data domains.
 
-This MCP server lets AI coding agents (Claude Code, Cursor) search that knowledge base directly while they work — no copy-pasting needed.
+This MCP server plugs that knowledge base directly into your AI coding agent (Claude Code, Cursor). Whether you're fine-tuning LLMs, optimizing inference serving, building agents, or wiring up RAG pipelines — your agent can search docs, build plans, review your approach, verify code, diagnose failures, propose next steps, and look up hyperparameter defaults. Every answer cites real KB pages you can drill into.
 
 Browse the full knowledge base at [leeroopedia.com](https://leeroopedia.com).
 
-## How It Works
+### Want to go end-to-end?
 
-Your AI agent calls a tool (e.g., `search_knowledge`). The MCP server forwards the request to the Leeroopedia backend, where AI agents search the knowledge base from multiple angles, read relevant pages, and synthesize a structured response with citations.
+Leeroopedia gives your agent the **knowledge**. [**Kapso**](https://github.com/leeroo-ai/kapso) gives it the **ability to act on it** — research, experiment, and deploy. Together: a complete ML/AI engineer agent.
 
-```mermaid
-sequenceDiagram
-    participant Agent as AI Agent
-    participant MCP as MCP Server
-    participant API as Leeroopedia API
-    participant KB as Knowledge Base
-
-    Agent->>MCP: Call tool (e.g., search_knowledge)
-    MCP->>API: POST /v1/search
-    API->>KB: AI agents search & synthesize
-    KB-->>API: Structured response + citations
-    API-->>MCP: Results with [PageID] refs
-    MCP-->>Agent: Synthesized answer
-```
-
-## Available Tools
-
-The server provides **8 agentic tools**. Each tool (except `get_page`) triggers an AI agent on the backend that searches, reads, and synthesizes responses from the knowledge base.
+## Connect to Your Agents
 
 <CardGroup cols={2}>
-  <Card title="search_knowledge" icon="magnifying-glass" href="/docs/tools/search-knowledge">
-    Search the KB for framework docs, APIs, and best practices
+  <Card title="Claude Code" icon="terminal" href="/docs/connect/claude-code">
+    Set up Leeroopedia MCP with Claude Code
   </Card>
-  <Card title="build_plan" icon="list-check" href="/docs/tools/build-plan">
-    Build a step-by-step ML execution plan
-  </Card>
-  <Card title="review_plan" icon="clipboard-check" href="/docs/tools/review-plan">
-    Review a plan against KB best practices
-  </Card>
-  <Card title="verify_code_math" icon="code" href="/docs/tools/verify-code-math">
-    Verify code against authoritative ML/math descriptions
-  </Card>
-  <Card title="diagnose_failure" icon="stethoscope" href="/docs/tools/diagnose-failure">
-    Diagnose training/deployment failures
-  </Card>
-  <Card title="propose_hypothesis" icon="lightbulb" href="/docs/tools/propose-hypothesis">
-    Propose ranked next-step hypotheses
-  </Card>
-  <Card title="query_hyperparameter_priors" icon="sliders" href="/docs/tools/query-hyperparameter-priors">
-    Query hyperparameter values, ranges & heuristics
-  </Card>
-  <Card title="get_page" icon="file-lines" href="/docs/tools/get-page">
-    Retrieve a specific KB page by ID
+  <Card title="Cursor" icon="code" href="/docs/connect/cursor">
+    Set up Leeroopedia MCP with Cursor
   </Card>
 </CardGroup>
 
+## Available Tools
+
+The server provides **8 agentic tools** — search, plan, review, verify, diagnose, hypothesize, query hyperparameters, and retrieve pages.
+
+<Card title="Tools Overview" icon="wrench" href="/docs/tools/overview">
+  See all 8 tools with parameters and usage
+</Card>
+
 ## Knowledge Base Coverage
 
-The knowledge base covers **100+ ML/AI frameworks and libraries** including:
+The knowledge base covers **1000+ ML/AI frameworks and libraries** including:
 
-- **Training**: TRL, PEFT, Axolotl, LLaMA-Factory, DeepSpeed, ColossalAI
-- **Serving**: vLLM, SGLang, MNN
-- **Techniques**: QLoRA, LoRA, RLHF, DPO, quantization, distributed training
+- **Training**: TRL, PEFT, Axolotl, LLaMA-Factory, DeepSpeed, Megatron-LM, ColossalAI, Unsloth
+- **Serving**: vLLM, SGLang, llama.cpp, MNN
+- **Infrastructure**: FlashAttention, Triton, CUDA
+- **Agents & RAG**: LangChain, LlamaIndex
 - **Content**: Architecture docs, API references, config formats, best practices, implementation patterns
 
 ## Quick Links
 
 <CardGroup cols={3}>
-  <Card title="Quickstart" icon="rocket" href="/docs/quickstart">
-    Get running in 2 minutes
+  <Card title="Claude Code" icon="terminal" href="/docs/connect/claude-code">
+    Connect in 2 minutes
+  </Card>
+  <Card title="Cursor" icon="code" href="/docs/connect/cursor">
+    Connect in 2 minutes
   </Card>
   <Card title="Tools Overview" icon="wrench" href="/docs/tools/overview">
     All 8 tools explained
-  </Card>
-  <Card title="How It Works" icon="gears" href="/docs/how-it-works">
-    Architecture & data flow
   </Card>
 </CardGroup>
