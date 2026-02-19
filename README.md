@@ -31,6 +31,8 @@ Leeroopedia gives your agent the **knowledge**. [**Kapso**](https://github.com/l
 
 ## Benchmarks
 
+We measured the effect of Leeroopedia MCP on real ML tasks built by Claude Code.
+
 - **ML Inference Optimization** — Write CUDA/Triton kernels for 10 KernelBench problems. **2.11x** geomean speedup vs 1.80x (**+17%**), with/without Leeroopedia MCP. [→ results](examples/ml_inference_optimization/)
 
 - **LLM Post-Training** — End-to-end SFT + DPO + LoRA merge + vLLM serving + IFEval on 8×A100. **21.3 vs 18.5** IFEval strict-prompt accuracy, **34.6 vs 30.9** strict-instruction accuracy, **272.7 vs 231.6** throughput. [→ results](examples/llm_post_training/)

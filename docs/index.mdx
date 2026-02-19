@@ -3,19 +3,21 @@ title: "Leeroopedia MCP"
 description: "Give your AI coding agent access to curated ML/AI knowledge"
 ---
 
-<Tip>**$20 free credit on sign-up** — that's plenty of searches, plans, and diagnoses. Skip the guesswork on your next fine-tuning run or inference deployment. No credit card required. [Get your API key →](https://app.leeroopedia.com)</Tip>
+<Tip>**$20 free credit on sign-up.** That's plenty of searches, plans, and diagnoses. Skip the guesswork on your next fine-tuning run or inference deployment. No credit card required. [Get your API key →](https://app.leeroopedia.com)</Tip>
 
 ## What is Leeroopedia?
 
-**Your ML & Data Knowledge Wiki.** Learnt by AI, built by AI, for AI. A centralized playbook of best practices and expert-level knowledge for Machine Learning and Data domains.
+**Your ML & AI Knowledge Wiki.** Learnt by AI, built by AI, for AI.
 
-This MCP server plugs that knowledge base directly into your AI coding agent (Claude Code, Cursor). Whether you're fine-tuning LLMs, optimizing inference serving, building agents, or wiring up RAG pipelines — your agent can search docs, build plans, review your approach, verify code, diagnose failures, propose next steps, and look up hyperparameter defaults. Every answer cites real KB pages you can drill into.
+Expert-level knowledge across the full ML & AI stack: fine-tuning and distributed training, inference serving and GPU kernel optimization, building agents and RAG pipelines. **1000+ frameworks and libraries**, all in one place.
+
+This MCP server turns your AI coding agent (Claude Code, Cursor) into an ML/AI expert engineer.
 
 Browse the full knowledge base at [leeroopedia.com](https://leeroopedia.com).
 
 ### Want to go end-to-end?
 
-Leeroopedia gives your agent the **knowledge**. [**Kapso**](https://github.com/leeroo-ai/kapso) gives it the **ability to act on it** — research, experiment, and deploy. Together: a complete ML/AI engineer agent.
+Leeroopedia gives your agent the **knowledge**. [**Kapso**](https://github.com/leeroo-ai/kapso) gives it the **ability to act on it**: research, experiment, and deploy. Together: a complete ML/AI engineer agent.
 
 ## Connect to Your Agents
 
@@ -28,9 +30,25 @@ Leeroopedia gives your agent the **knowledge**. [**Kapso**](https://github.com/l
   </Card>
 </CardGroup>
 
+## Benchmarks
+
+We measured the effect of Leeroopedia MCP on real ML tasks:
+
+- **ML Inference Optimization.** Write CUDA/Triton kernels for 10 KernelBench problems. **2.11x** geomean speedup vs 1.80x (**+17%**), with/without Leeroopedia MCP.
+
+- **LLM Post-Training.** End-to-end SFT + DPO + LoRA merge + vLLM serving + IFEval on 8×A100. **21.3 vs 18.5** IFEval strict-prompt accuracy, **34.6 vs 30.9** strict-instruction accuracy, **272.7 vs 231.6** throughput.
+
+- **Self-Evolving RAG.** Build a RAG service that automatically improves itself over multiple rounds. **45.16 vs 40.51** Precision@5, **40.32 vs 35.29** Recall@5, in **52 vs 62 min** wall time.
+
+- **Customer Support Agent.** Multi-agent triage system classifying 200 tickets into 27 intents. **98 vs 83** benchmark performance, **11s vs 61s** per query.
+
+<Card title="See Full Benchmark Results" icon="chart-bar" href="/docs/benchmarks">
+  Detailed results, analysis, and replication instructions for all 4 benchmarks
+</Card>
+
 ## Available Tools
 
-The server provides **8 agentic tools** — search, plan, review, verify, diagnose, hypothesize, query hyperparameters, and retrieve pages.
+The server provides **8 agentic tools**: search, plan, review, verify, diagnose, hypothesize, query hyperparameters, and retrieve pages.
 
 <Card title="Tools Overview" icon="wrench" href="/docs/tools/overview">
   See all 8 tools with parameters and usage
@@ -54,6 +72,9 @@ The knowledge base covers **1000+ ML/AI frameworks and libraries** including:
   </Card>
   <Card title="Cursor" icon="code" href="/docs/connect/cursor">
     Connect in 2 minutes
+  </Card>
+  <Card title="Benchmarks" icon="chart-bar" href="/docs/benchmarks">
+    See the results
   </Card>
   <Card title="Tools Overview" icon="wrench" href="/docs/tools/overview">
     All 8 tools explained

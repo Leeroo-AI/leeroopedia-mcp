@@ -24,7 +24,8 @@
           {
             "group": "Getting Started",
             "pages": [
-              "docs/index"
+              "docs/index",
+              "docs/benchmarks"
             ]
           },
           {
