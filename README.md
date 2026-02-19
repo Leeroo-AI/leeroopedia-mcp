@@ -15,13 +15,13 @@
 
 > **$20 free credit on sign-up** : that's plenty of searches, plans, and diagnoses. Skip the guesswork on your next fine-tuning run or inference deployment. No credit card required. [Get your API key →](https://app.leeroopedia.com)
 
----
-
 ## What is Leeroopedia?
 
-**Your ML & Data Knowledge Wiki.** Learnt by AI, built by AI, for AI. A centralized playbook of best practices and expert-level knowledge for Machine Learning and Data domains, covering 1000+ frameworks and libraries, vLLM, SGLang, DeepSpeed, Megatron-LM, FlashAttention, Triton, llama.cpp, Unsloth, Axolotl, LLaMA-Factory, TRL, PEFT, ColossalAI, LangChain, LlamaIndex, and many more.
+**Your ML & AI Knowledge Wiki.** Learnt by AI, built by AI, for AI.
 
-This MCP server plugs that knowledge base directly into your AI coding agent (Claude Code, Cursor). Whether you're fine-tuning LLMs, optimizing inference serving, building agents, or wiring up RAG pipelines; stop guessing at framework internals, wrestling with cryptic CUDA errors, or wasting GPU hours on wrong hyperparameters. Your agent can **search docs**, **build plans**, **review your approach**, **verify code against reference implementations**, **diagnose training failures**, **propose what to try next**, and **look up battle-tested hyperparameter defaults**. Every answer cites real KB pages you can drill into.
+Expert-level knowledge across the full ML & AI stack — from fine-tuning and distributed training, to inference serving and GPU kernel optimization, to building agents and RAG pipelines. **1000+ frameworks and libraries**, all in one place.
+
+This MCP server turns your AI coding agent (Claude Code, Cursor) into an ML/AI expert engineer.
 
 Browse the full knowledge base at [leeroopedia.com](https://leeroopedia.com).
 
@@ -29,7 +29,15 @@ Browse the full knowledge base at [leeroopedia.com](https://leeroopedia.com).
 
 Leeroopedia gives your agent the **knowledge**. [**Kapso**](https://github.com/leeroo-ai/kapso) gives it the **ability to act on it** : research, experiment, and deploy. Together: a complete ML/AI engineer agent.
 
----
+## Benchmarks
+
+- **ML Inference Optimization** — Write CUDA/Triton kernels for 10 KernelBench problems. **2.11x** geomean speedup vs 1.80x (**+17%**), with/without Leeroopedia MCP. [→ results](examples/ml_inference_optimization/)
+
+- **LLM Post-Training** — End-to-end SFT + DPO + LoRA merge + vLLM serving + IFEval on 8×A100. **21.3 vs 18.5** IFEval strict-prompt accuracy, **34.6 vs 30.9** strict-instruction accuracy, **272.7 vs 231.6** throughput. [→ results](examples/llm_post_training/)
+
+- **Self-Evolving RAG** — Build a RAG service that automatically improves itself over multiple rounds. **45.16 vs 40.51** Precision@5, **40.32 vs 35.29** Recall@5, in **52 vs 62 min** wall time. [→ results](examples/self_evolve_rag/)
+
+- **Customer Support Agent** — Multi-agent triage system classifying 200 tickets into 27 intents. **98 vs 83** benchmark performance, **11s vs 61s** per query. [→ results](examples/customer_support_agent/)
 
 ## Quick Start
 
@@ -85,8 +93,6 @@ Add to your Cursor settings (`.cursor/mcp.json`):
   }
 }
 ```
-
----
 
 ## Available Tools
 
@@ -202,10 +208,6 @@ Start with battle-tested defaults instead of guessing. Returns a suggestion tabl
 
 </details>
 
----
-
----
-
 ## Environment Variables
 
 | Variable | Required | Default | Description |
@@ -214,8 +216,6 @@ Start with battle-tested defaults instead of guessing. Returns a suggestion tabl
 | `LEEROOPEDIA_API_URL` | No | `https://api.leeroopedia.com` | API endpoint |
 | `LEEROOPEDIA_POLL_MAX_WAIT` | No | `300` | Max seconds to wait for a search task |
 | `LEEROOPEDIA_POLL_INTERVAL` | No | `0.5` | Initial poll interval in seconds (grows via backoff) |
-
----
 
 ## Troubleshooting
 
@@ -226,8 +226,6 @@ Start with battle-tested defaults instead of guessing. Returns a suggestion tabl
 | `Insufficient credits` (402) | Purchase more credits at [app.leeroopedia.com](https://app.leeroopedia.com) |
 | `Rate limit exceeded` (429) | Wait for the retry period before making more requests |
 | `Search timed out` (504) | Try a more specific query, or increase `LEEROOPEDIA_POLL_MAX_WAIT` |
-
----
 
 ## Contributing
 
