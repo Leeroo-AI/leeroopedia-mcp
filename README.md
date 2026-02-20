@@ -19,9 +19,9 @@
 
 **Your ML & AI Knowledge Wiki.** Learnt by AI, built by AI, for AI.
 
-Expert-level knowledge across the full ML & AI stack — from fine-tuning and distributed training, to inference serving and GPU kernel optimization, to building agents and RAG pipelines. **1000+ frameworks and libraries**, all in one place.
+Expert-level knowledge across the full ML & AI stack, from fine-tuning and distributed training, to inference serving and GPU kernel optimization, to building agents and RAG pipelines. **1000+ frameworks and libraries**, all in one place.
 
-This MCP server turns your AI coding agent (Claude Code, Cursor) into an ML/AI expert engineer.
+This MCP server turns your AI coding agent (Claude Code, Cursor, OpenAI Codex, ...) into an ML/AI expert engineer.
 
 Browse the full knowledge base at [leeroopedia.com](https://leeroopedia.com).
 
@@ -33,13 +33,19 @@ Leeroopedia gives your agent the **knowledge**. [**Kapso**](https://github.com/l
 
 We measured the effect of Leeroopedia MCP on real ML tasks built by Claude Code.
 
-- **ML Inference Optimization** — Write CUDA/Triton kernels for 10 KernelBench problems. **2.11x** geomean speedup vs 1.80x (**+17%**), with/without Leeroopedia MCP. [→ results](examples/ml_inference_optimization/)
+- **ML Inference Optimization**: Write CUDA/Triton kernels for 10 KernelBench problems. **2.11x** geomean speedup vs 1.80x (**+17%**), with/without Leeroopedia MCP. [→ results](examples/ml_inference_optimization/)
 
-- **LLM Post-Training** — End-to-end SFT + DPO + LoRA merge + vLLM serving + IFEval on 8×A100. **21.3 vs 18.5** IFEval strict-prompt accuracy, **34.6 vs 30.9** strict-instruction accuracy, **272.7 vs 231.6** throughput. [→ results](examples/llm_post_training/)
+- **LLM Post-Training**: End-to-end SFT + DPO + LoRA merge + vLLM serving + IFEval on 8×A100. **21.3 vs 18.5** IFEval strict-prompt accuracy, **34.6 vs 30.9** strict-instruction accuracy, **272.7 vs 231.6** throughput. [→ results](examples/llm_post_training/)
 
-- **Self-Evolving RAG** — Build a RAG service that automatically improves itself over multiple rounds. **45.16 vs 40.51** Precision@5, **40.32 vs 35.29** Recall@5, in **52 vs 62 min** wall time. [→ results](examples/self_evolve_rag/)
+  <img src="examples/llm_post_training/analysis.png" width="50%" />
 
-- **Customer Support Agent** — Multi-agent triage system classifying 200 tickets into 27 intents. **98 vs 83** benchmark performance, **11s vs 61s** per query. [→ results](examples/customer_support_agent/)
+- **Self-Evolving RAG**: Build a RAG service that automatically improves itself over multiple rounds. **45.16 vs 40.51** Precision@5, **40.32 vs 35.29** Recall@5, in **52 vs 62 min** wall time. [→ results](examples/self_evolve_rag/)
+
+  <img src="examples/self_evolve_rag/analysis.png" width="50%" />
+
+- **Customer Support Agent**: Multi-agent triage system classifying 200 tickets into 27 intents. **98 vs 83** benchmark performance, **11s vs 61s** per query. [→ results](examples/customer_support_agent/)
+
+  <img src="examples/customer_support_agent/analysis.png" width="50%" />
 
 ## Quick Start
 
