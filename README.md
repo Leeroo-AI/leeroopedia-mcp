@@ -37,15 +37,15 @@ We measured the effect of Leeroopedia MCP on real ML tasks built by Claude Code.
 
 - **LLM Post-Training**: End-to-end SFT + DPO + LoRA merge + vLLM serving + IFEval on 8×A100. **21.3 vs 18.5** IFEval strict-prompt accuracy, **34.6 vs 30.9** strict-instruction accuracy, **272.7 vs 231.6** throughput. [→ results](examples/llm_post_training/)
 
-  <img src="examples/llm_post_training/analysis.png" width="50%" />
+  <img src="examples/llm_post_training/analysis.png" width="70%" />
 
 - **Self-Evolving RAG**: Build a RAG service that automatically improves itself over multiple rounds. **45.16 vs 40.51** Precision@5, **40.32 vs 35.29** Recall@5, in **52 vs 62 min** wall time. [→ results](examples/self_evolve_rag/)
 
-  <img src="examples/self_evolve_rag/analysis.png" width="50%" />
+  <img src="examples/self_evolve_rag/analysis.png" width="70%" />
 
 - **Customer Support Agent**: Multi-agent triage system classifying 200 tickets into 27 intents. **98 vs 83** benchmark performance, **11s vs 61s** per query. [→ results](examples/customer_support_agent/)
 
-  <img src="examples/customer_support_agent/analysis.png" width="50%" />
+  <img src="examples/customer_support_agent/analysis.png" width="70%" />
 
 ## Quick Start
 
@@ -84,6 +84,12 @@ Add to your `~/.claude.json` or project `.mcp.json`:
 }
 ```
 
+> **Getting `spawn uvx ENOENT`?** Your IDE can't find `uvx` in its PATH. Run `which uvx` (or `where uvx` on Windows) in your terminal to get the full path, then use it in your config:
+> ```json
+> "command": "/home/username/.local/bin/uvx"
+> ```
+> Common locations: `~/.local/bin/uvx` (Linux), `~/.local/bin/uvx` (macOS curl install), `/opt/homebrew/bin/uvx` (macOS Homebrew).
+
 ### 4. Configure Cursor
 
 Add to your Cursor settings (`.cursor/mcp.json`):
@@ -101,6 +107,8 @@ Add to your Cursor settings (`.cursor/mcp.json`):
   }
 }
 ```
+
+> **Getting `spawn uvx ENOENT`?** See the tip in [Configure Claude Code](#3-configure-claude-code) above.
 
 ## Available Tools
 
@@ -229,6 +237,7 @@ Start with battle-tested defaults instead of guessing. Returns a suggestion tabl
 
 | Error | Fix |
 |-------|-----|
+| `spawn uvx ENOENT` | Your IDE can't find `uvx`. Run `which uvx` (or `where uvx` on Windows) in your terminal, then use the full path as the `command` value in your config |
 | `LEEROOPEDIA_API_KEY is required` | Set `LEEROOPEDIA_API_KEY` in your MCP config `env` block |
 | `Invalid or revoked API key` (401) | Re-copy your key from [app.leeroopedia.com](https://app.leeroopedia.com) |
 | `Insufficient credits` (402) | Purchase more credits at [app.leeroopedia.com](https://app.leeroopedia.com) |

@@ -32,6 +32,10 @@ description: "Connect Leeroopedia MCP to Claude Code"
       `uvx` auto-downloads and runs the package — no `pip install` needed. It also auto-updates to the latest version.
     </Note>
 
+    <Note>
+      **Getting `spawn uvx ENOENT`?** Your IDE can't find `uvx` in its PATH. Run `which uvx` (or `where uvx` on Windows) in your terminal to get the full path, then replace `"uvx"` with it in your config (e.g. `"/home/username/.local/bin/uvx"`).
+    </Note>
+
     If you don't have `uv`, install manually first:
 
     ```bash

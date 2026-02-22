@@ -35,6 +35,27 @@ description: "Common issues and how to fix them"
 
 ## Connection Issues
 
+<Accordion title="spawn uvx ENOENT">
+  Your IDE (Cursor, Claude Desktop, etc.) can't find `uvx` because GUI apps don't inherit your shell's PATH.
+
+  **Fix:**
+
+  1. Open your terminal and run `which uvx` (or `where uvx` on Windows) to get the full path.
+  2. Replace `"uvx"` with the full path in your MCP config:
+
+  ```json
+  "command": "/home/username/.local/bin/uvx"
+  ```
+
+  Common locations:
+  - **Linux:** `~/.local/bin/uvx`
+  - **macOS (curl install):** `~/.local/bin/uvx`
+  - **macOS (Homebrew):** `/opt/homebrew/bin/uvx`
+  - **Windows:** Run `where uvx` to find the path
+
+  If `uvx` is not installed at all, install `uv` first: [docs.astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/).
+</Accordion>
+
 <Accordion title="MCP server not starting">
   If Claude Code or Cursor cannot connect to the MCP server, check that uvx is installed, test the server directly with LEEROOPEDIA_API_KEY set, and run claude mcp list to verify connectivity.
 </Accordion>

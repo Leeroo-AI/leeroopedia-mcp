@@ -32,6 +32,16 @@ description: "Connect Leeroopedia MCP to Cursor"
       `uvx` auto-downloads and runs the package — no `pip install` needed. It also auto-updates to the latest version.
     </Note>
 
+    <Warning>
+      **Getting `spawn uvx ENOENT`?** Cursor can't find `uvx` in its PATH (GUI apps don't inherit your shell's PATH). Find the full path by running `which uvx` (or `where uvx` on Windows) in your terminal, then replace `"uvx"` with the full path:
+
+      ```json
+      "command": "/home/username/.local/bin/uvx"
+      ```
+
+      Common locations: `~/.local/bin/uvx` (Linux), `~/.local/bin/uvx` (macOS curl install), `/opt/homebrew/bin/uvx` (macOS Homebrew).
+    </Warning>
+
     If you don't have `uv`, install manually first:
 
     ```bash
