@@ -32,7 +32,8 @@
             "group": "Connect to Your Agents",
             "pages": [
               "docs/connect/claude-code",
-              "docs/connect/cursor"
+              "docs/connect/cursor",
+              "docs/connect/codex"
             ]
           },
           {

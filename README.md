@@ -11,6 +11,10 @@
   <a href="https://www.ycombinator.com/companies/leeroo"><img src="https://img.shields.io/badge/Y%20Combinator-X25-orange?logo=ycombinator&logoColor=white" alt="Y Combinator X25"></a>
 </p>
 
+<p align="center">
+  <img src="assets/overview.png" alt="Leeroopedia MCP overview" width="80%" />
+</p>
+
 ---
 
 > **$20 free credit on sign-up** : that's plenty of searches, plans, and diagnoses. Skip the guesswork on your next fine-tuning run or inference deployment. No credit card required. [Get your API key →](https://app.leeroopedia.com)
@@ -106,6 +110,27 @@ Add to your Cursor settings (`.cursor/mcp.json`):
     }
   }
 }
+```
+
+> **Getting `spawn uvx ENOENT`?** See the tip in [Configure Claude Code](#3-configure-claude-code) above.
+
+### 5. Configure OpenAI Codex
+
+Run the CLI command:
+
+```bash
+codex mcp add leeroopedia --env LEEROOPEDIA_API_KEY=kpsk_your_key_here -- uvx leeroopedia-mcp
+```
+
+Or add to your `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.leeroopedia]
+command = "uvx"
+args = ["leeroopedia-mcp"]
+
+[mcp_servers.leeroopedia.env]
+LEEROOPEDIA_API_KEY = "kpsk_your_key_here"
 ```
 
 > **Getting `spawn uvx ENOENT`?** See the tip in [Configure Claude Code](#3-configure-claude-code) above.

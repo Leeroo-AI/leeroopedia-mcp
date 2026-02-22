@@ -1,0 +1,83 @@
+---
+title: "OpenAI Codex"
+description: "Connect Leeroopedia MCP to OpenAI Codex CLI"
+---
+
+## Prerequisites
+
+- [uv](https://docs.astral.sh/uv/) (recommended) or pip
+- A Leeroopedia API key — get one at [app.leeroopedia.com](https://app.leeroopedia.com)
+
+## Setup
+
+<Steps>
+  <Step title="Add MCP server">
+    **Option A: CLI command (recommended)**
+
+    ```bash
+    codex mcp add leeroopedia --env LEEROOPEDIA_API_KEY=kpsk_your_key_here -- uvx leeroopedia-mcp
+    ```
+
+    **Option B: Edit `~/.codex/config.toml` directly**
+
+    ```toml
+    [mcp_servers.leeroopedia]
+    command = "uvx"
+    args = ["leeroopedia-mcp"]
+
+    [mcp_servers.leeroopedia.env]
+    LEEROOPEDIA_API_KEY = "kpsk_your_key_here"
+    ```
+
+    <Note>
+      `uvx` auto-downloads and runs the package — no `pip install` needed. It also auto-updates to the latest version.
+    </Note>
+
+    <Note>
+      **Getting `spawn uvx ENOENT`?** Codex can't find `uvx` in its PATH. Run `which uvx` (or `where uvx` on Windows) in your terminal to get the full path, then replace `"uvx"` with it in your config (e.g. `command = "/home/username/.local/bin/uvx"`).
+    </Note>
+
+    If you don't have `uv`, install manually first:
+
+    ```bash
+    pip install leeroopedia-mcp
+    ```
+
+    Then use `leeroopedia-mcp` as the command:
+
+    ```toml
+    [mcp_servers.leeroopedia]
+    command = "leeroopedia-mcp"
+
+    [mcp_servers.leeroopedia.env]
+    LEEROOPEDIA_API_KEY = "kpsk_your_key_here"
+    ```
+  </Step>
+
+  <Step title="Verify the connection">
+    Run `codex mcp list` or type `/mcp` in the Codex TUI. You should see the **leeroopedia** server listed and connected.
+  </Step>
+</Steps>
+
+## Try It Out
+
+Ask Codex something like:
+
+> "Use leeroopedia to search for best practices for QLoRA fine-tuning."
+
+The agent will call `search_knowledge` and return a synthesized answer with `[PageID]` citations.
+
+You can then follow up with:
+
+> "Get the full page for [PageID] that was cited."
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Tools Overview" icon="wrench" href="/docs/tools/overview">
+    Learn about all 8 available tools
+  </Card>
+  <Card title="Environment Variables" icon="gear" href="/docs/environment-variables">
+    Configuration reference
+  </Card>
+</CardGroup>
