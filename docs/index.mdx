@@ -11,7 +11,7 @@ description: "Give your AI coding agent access to curated ML/AI knowledge"
 
 Expert-level knowledge across the full ML & AI stack: fine-tuning and distributed training, inference serving and GPU kernel optimization, building agents and RAG pipelines. **1000+ frameworks and libraries**, all in one place.
 
-This MCP server turns your AI coding agent (Claude Code, Cursor) into an ML/AI expert engineer.
+This MCP server turns your AI coding agent (Claude Code, Cursor, Claude Desktop, ChatGPT, OpenAI Codex, ...) into an ML/AI expert engineer.
 
 Browse the full knowledge base at [leeroopedia.com](https://leeroopedia.com).
 
@@ -21,12 +21,29 @@ Leeroopedia gives your agent the **knowledge**. [**Kapso**](https://github.com/l
 
 ## Connect to Your Agents
 
+Use our hosted server for zero-setup. Just paste this URL into any MCP client that supports remote servers:
+
+```
+https://mcp.leeroopedia.com/mcp?token=kpsk_your_key_here
+```
+
+Or see the per-client guides below for detailed instructions (including local setup).
+
 <CardGroup cols={2}>
   <Card title="Claude Code" icon="terminal" href="/docs/connect/claude-code">
-    Set up Leeroopedia MCP with Claude Code
+    Set up with Claude Code
   </Card>
   <Card title="Cursor" icon="code" href="/docs/connect/cursor">
-    Set up Leeroopedia MCP with Cursor
+    Set up with Cursor
+  </Card>
+  <Card title="Claude Desktop" icon="message-bot" href="/docs/connect/claude-desktop">
+    Set up with Claude Desktop
+  </Card>
+  <Card title="OpenAI Codex" icon="robot" href="/docs/connect/codex">
+    Set up with OpenAI Codex
+  </Card>
+  <Card title="ChatGPT" icon="comment" href="/docs/connect/chatgpt">
+    Set up with ChatGPT
   </Card>
 </CardGroup>
 
@@ -54,16 +71,6 @@ The server provides **8 agentic tools**: search, plan, review, verify, diagnose,
   See all 8 tools with parameters and usage
 </Card>
 
-## Knowledge Base Coverage
-
-The knowledge base covers **1000+ ML/AI frameworks and libraries** including:
-
-- **Training**: TRL, PEFT, Axolotl, LLaMA-Factory, DeepSpeed, Megatron-LM, ColossalAI, Unsloth
-- **Serving**: vLLM, SGLang, llama.cpp, MNN
-- **Infrastructure**: FlashAttention, Triton, CUDA
-- **Agents & RAG**: LangChain, LlamaIndex
-- **Content**: Architecture docs, API references, config formats, best practices, implementation patterns
-
 ## Quick Links
 
 <CardGroup cols={3}>
@@ -71,6 +78,15 @@ The knowledge base covers **1000+ ML/AI frameworks and libraries** including:
     Connect in 2 minutes
   </Card>
   <Card title="Cursor" icon="code" href="/docs/connect/cursor">
+    Connect in 2 minutes
+  </Card>
+  <Card title="Claude Desktop" icon="message-bot" href="/docs/connect/claude-desktop">
+    Connect in 2 minutes
+  </Card>
+  <Card title="OpenAI Codex" icon="robot" href="/docs/connect/codex">
+    Connect in 2 minutes
+  </Card>
+  <Card title="ChatGPT" icon="comment" href="/docs/connect/chatgpt">
     Connect in 2 minutes
   </Card>
   <Card title="Benchmarks" icon="chart-bar" href="/docs/benchmarks">

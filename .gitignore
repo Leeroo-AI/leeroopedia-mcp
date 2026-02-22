@@ -46,3 +46,6 @@ htmlcov/
 # mypy
 .mypy_cache/
 .mcp.json
+
+# Remote MCP server (private, deployed separately)
+remote_leeroopedia_mcp/

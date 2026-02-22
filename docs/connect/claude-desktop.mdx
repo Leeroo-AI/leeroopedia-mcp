@@ -1,0 +1,56 @@
+---
+title: "Claude Desktop"
+description: "Connect Leeroopedia MCP to Claude Desktop"
+---
+
+## Prerequisites
+
+- A Leeroopedia API key. Get one at [app.leeroopedia.com](https://app.leeroopedia.com)
+
+## Setup
+
+Claude Desktop supports remote MCP servers via custom connectors. No local installation is required.
+
+<Steps>
+  <Step title="Add custom connector">
+    1. Open Claude Desktop
+    2. Go to **Settings > Connectors > Add custom connector**
+    3. Set the name to `Leeroopedia`
+    4. Paste the URL:
+
+    ```
+    https://mcp.leeroopedia.com/mcp?token=kpsk_your_key_here
+    ```
+
+    Replace `kpsk_your_key_here` with your actual API key.
+
+    5. Click **Add**
+  </Step>
+
+  <Step title="Verify the connection">
+    The Leeroopedia connector should appear in your list of active connectors. Start a new conversation and the 8 Leeroopedia tools will be available.
+  </Step>
+</Steps>
+
+## Try It Out
+
+Ask Claude something like:
+
+> "Use leeroopedia to search for best practices for QLoRA fine-tuning."
+
+The agent will call `search_knowledge` and return a synthesized answer with `[PageID]` citations.
+
+You can then follow up with:
+
+> "Get the full page for [PageID] that was cited."
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Tools Overview" icon="wrench" href="/docs/tools/overview">
+    Learn about all 8 available tools
+  </Card>
+  <Card title="Environment Variables" icon="gear" href="/docs/environment-variables">
+    Configuration reference
+  </Card>
+</CardGroup>

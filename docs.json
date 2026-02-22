@@ -33,7 +33,9 @@
             "pages": [
               "docs/connect/claude-code",
               "docs/connect/cursor",
-              "docs/connect/codex"
+              "docs/connect/claude-desktop",
+              "docs/connect/codex",
+              "docs/connect/chatgpt"
             ]
           },
           {

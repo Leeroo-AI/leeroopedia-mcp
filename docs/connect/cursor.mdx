@@ -5,10 +5,27 @@ description: "Connect Leeroopedia MCP to Cursor"
 
 ## Prerequisites
 
-- [uv](https://docs.astral.sh/uv/) (recommended) or pip
-- A Leeroopedia API key — get one at [app.leeroopedia.com](https://app.leeroopedia.com)
+- A Leeroopedia API key. Get one at [app.leeroopedia.com](https://app.leeroopedia.com)
 
-## Setup
+## Quick Install (Remote Server)
+
+Add to your Cursor settings at `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "leeroopedia": {
+      "url": "https://mcp.leeroopedia.com/mcp?token=kpsk_your_key_here"
+    }
+  }
+}
+```
+
+Replace `kpsk_your_key_here` with your actual API key. Open the MCP panel in Cursor settings and confirm the **leeroopedia** server shows a green status.
+
+## Alternative: Run Locally
+
+If you prefer to run the MCP server on your own machine, use `uvx` or `pip`.
 
 <Steps>
   <Step title="Add MCP config">
@@ -29,7 +46,7 @@ description: "Connect Leeroopedia MCP to Cursor"
     ```
 
     <Note>
-      `uvx` auto-downloads and runs the package — no `pip install` needed. It also auto-updates to the latest version.
+      `uvx` auto-downloads and runs the package. No `pip install` needed. It also auto-updates to the latest version.
     </Note>
 
     <Warning>

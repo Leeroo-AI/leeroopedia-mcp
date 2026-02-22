@@ -27,7 +27,7 @@ Implement a complete SFT + DPO fine-tuning, LoRA merge, vLLM serving, and IFEval
 | **IFEval strict-instruction accuracy** | 30.9 | **34.6** |
 | **Throughput** | 231.6 | **272.7** |
 
-<img src="../examples/llm_post_training/analysis.png" width="50%" />
+<img src="../examples/llm_post_training/analysis.png" width="70%" />
 
 **What made the difference:** The KB agent queried hyperparameter priors and chose a **25x lower DPO learning rate** (2e-6 vs 5e-5), avoiding divergence during preference optimization. It also merged the SFT adapter into base weights before creating a fresh LoRA for DPO (avoiding stacked adapters), used a proper train/eval split for DPO, and shuffled datasets with a fixed seed.
 
@@ -45,7 +45,7 @@ Build a FastAPI service that ingests a corpus, answers questions via hybrid retr
 | **Recall@5** | 35.29 | **40.32** |
 | **Wall time** | 62 min | **52 min** |
 
-<img src="../examples/self_evolve_rag/analysis.png" width="50%" />
+<img src="../examples/self_evolve_rag/analysis.png" width="70%" />
 
 **What made the difference:** The KB agent used **DBSF (3-sigma) score normalization** for fusing BM25 and vector scores instead of Reciprocal Rank Fusion. This preserved score magnitude information, letting the evolution loop meaningfully adjust fusion weights. It also used a **blue-green collection pattern** for ChromaDB index swaps instead of a simpler lock-based pointer swap.
 
@@ -62,8 +62,8 @@ Build a multi-agent system that classifies 200 customer support tickets into 27 
 | **Benchmark performance** | 83 | **98** |
 | **System speed (sec/query)** | 61 | **11** |
 
-<img src="../examples/customer_support_agent/analysis.png" width="50%" />
+<img src="../examples/customer_support_agent/analysis.png" width="70%" />
 
-**What made the difference:** A single KB lookup taught the agent **typed handoff callbacks with `input_type`** — a framework-specific pattern in the OpenAI Agents SDK. The baseline used fragile regex extraction from free text, while the KB agent registered each handoff with a Pydantic model that the SDK enforces at handoff time. The KB also taught proper state serialization and `output_type` usage.
+**What made the difference:** A single KB lookup taught the agent **typed handoff callbacks with `input_type`**, a framework-specific pattern in the OpenAI Agents SDK. The baseline used fragile regex extraction from free text, while the KB agent registered each handoff with a Pydantic model that the SDK enforces at handoff time. The KB also taught proper state serialization and `output_type` usage.
 
 [→ Full results and replication instructions](https://github.com/Leeroo-AI/leeroopedia-mcp/tree/main/examples/customer_support_agent)

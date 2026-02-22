@@ -1,0 +1,67 @@
+---
+title: "ChatGPT"
+description: "Connect Leeroopedia MCP to ChatGPT"
+---
+
+## Prerequisites
+
+- A Leeroopedia API key. Get one at [app.leeroopedia.com](https://app.leeroopedia.com)
+- An OpenAI account with ChatGPT Plus, Pro, or Team
+
+## Setup
+
+<Steps>
+  <Step title="Open ChatGPT and add a new source">
+    Go to [chatgpt.com](https://chatgpt.com) and click the **"+"** button to add a new source.
+  </Step>
+
+  <Step title="Connect more">
+    Click **"Add"**, then select **"Connect more"**.
+  </Step>
+
+  <Step title="Enable Developer Mode">
+    Click **"Advanced settings"**, enable **Developer Mode**, then click **"Create app"**.
+  </Step>
+
+  <Step title="Add the Leeroopedia MCP server">
+    Fill in the following details:
+
+    - **App name:** `Leeroopedia`
+    - **MCP Server URL:**
+
+    ```
+    https://mcp.leeroopedia.com/mcp?token=kpsk_your_key_here
+    ```
+
+    - **Authentication:** no authentication
+
+    Replace `kpsk_your_key_here` with your actual API key. Click **"Create"** to finish.
+  </Step>
+
+  <Step title="Verify the connection">
+    The Leeroopedia app should appear in your list of connected apps. Start a new conversation and the 8 Leeroopedia tools will be available.
+  </Step>
+</Steps>
+
+## Try It Out
+
+Ask ChatGPT something like:
+
+> "Use leeroopedia to search for best practices for QLoRA fine-tuning."
+
+The agent will call `search_knowledge` and return a synthesized answer with `[PageID]` citations.
+
+You can then follow up with:
+
+> "Get the full page for [PageID] that was cited."
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Tools Overview" icon="wrench" href="/docs/tools/overview">
+    Learn about all 8 available tools
+  </Card>
+  <Card title="Environment Variables" icon="gear" href="/docs/environment-variables">
+    Configuration reference
+  </Card>
+</CardGroup>

@@ -5,14 +5,16 @@
 </p>
 
 <p align="center">
+  <a href="https://leeroopedia.com"><img src="https://img.shields.io/badge/knowledge%20base-leeroopedia.com-green" alt="Leeroopedia"></a>
   <a href="https://pypi.org/project/leeroopedia-mcp/"><img src="https://img.shields.io/pypi/v/leeroopedia-mcp?color=blue" alt="PyPI"></a>
+  <a href="https://docs.leeroopedia.com"><img src="https://img.shields.io/badge/docs-leeroopedia.com-blue" alt="Docs"></a>
   <a href="https://discord.gg/hqVbPNNEZM"><img src="https://dcbadge.limes.pink/api/server/hqVbPNNEZM?style=flat" alt="Discord"></a>
   <a href="https://github.com/Leeroo-AI/leeroopedia-mcp"><img src="https://img.shields.io/github/commit-activity/m/Leeroo-AI/leeroopedia-mcp" alt="GitHub commit activity"></a>
   <a href="https://www.ycombinator.com/companies/leeroo"><img src="https://img.shields.io/badge/Y%20Combinator-X25-orange?logo=ycombinator&logoColor=white" alt="Y Combinator X25"></a>
 </p>
 
 <p align="center">
-  <img src="assets/overview.png" alt="Leeroopedia MCP overview" width="80%" />
+  <img src="assets/overview.png" alt="Leeroopedia MCP overview" width="70%" />
 </p>
 
 ---
@@ -53,24 +55,32 @@ We measured the effect of Leeroopedia MCP on real ML tasks built by Claude Code.
 
 ## Quick Start
 
-### 1. Install
-
-No installation needed if you have [uv](https://docs.astral.sh/uv/). The MCP configs below use `uvx` to auto-download and run.
-
-**Alternative** (manual install):
-
-```bash
-pip install leeroopedia-mcp
-```
-
-### 2. Get Your API Key
+### 1. Get Your API Key
 
 1. Go to [app.leeroopedia.com](https://app.leeroopedia.com)
 2. Create an account or log in
 3. Navigate to **Dashboard > API Keys**
 4. Copy your API key (format: `kpsk_...`)
 
+### 2. Use the hosted server (no installation needed)
+
+Just paste this URL into any MCP client that supports remote servers:
+
+```
+https://mcp.leeroopedia.com/mcp?token=kpsk_your_key_here
+```
+
+See the [connect guides](https://docs.leeroopedia.com) for running locally.
+
 ### 3. Configure Claude Code
+
+**Remote (no install):**
+
+```bash
+claude mcp add --transport http leeroopedia "https://mcp.leeroopedia.com/mcp?token=kpsk_your_key_here"
+```
+
+**Local (via uvx):**
 
 Add to your `~/.claude.json` or project `.mcp.json`:
 
@@ -96,7 +106,21 @@ Add to your `~/.claude.json` or project `.mcp.json`:
 
 ### 4. Configure Cursor
 
+**Remote (no install):**
+
 Add to your Cursor settings (`.cursor/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "leeroopedia": {
+      "url": "https://mcp.leeroopedia.com/mcp?token=kpsk_your_key_here"
+    }
+  }
+}
+```
+
+**Local (via uvx):**
 
 ```json
 {
@@ -142,7 +166,7 @@ The MCP server provides **8 agentic tools**. Each tool (except `get_page`) trigg
 ### Search & Retrieve
 
 <details>
-<summary><b><code>search_knowledge</code></b> — Search the KB for framework docs, APIs, and best practices</summary>
+<summary><b><code>search_knowledge</code></b>: Search the KB for framework docs, APIs, and best practices</summary>
 <br>
 
 An AI agent synthesizes a grounded answer with `[PageID]` citations.
@@ -155,10 +179,10 @@ An AI agent synthesizes a grounded answer with `[PageID]` citations.
 </details>
 
 <details>
-<summary><b><code>get_page</code></b> — Retrieve a specific KB page by ID</summary>
+<summary><b><code>get_page</code></b>: Retrieve a specific KB page by ID</summary>
 <br>
 
-Direct lookup — no AI agent needed. Use this to drill into `[PageID]` citations from other tools.
+Direct lookup, no AI agent needed. Use this to drill into `[PageID]` citations from other tools.
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
@@ -169,10 +193,10 @@ Direct lookup — no AI agent needed. Use this to drill into `[PageID]` citation
 ### Plan & Review
 
 <details>
-<summary><b><code>build_plan</code></b> — Build a step-by-step ML execution plan</summary>
+<summary><b><code>build_plan</code></b>: Build a step-by-step ML execution plan</summary>
 <br>
 
-Returns an overview, key specs, numbered steps, and validation criteria — all grounded in KB evidence.
+Returns an overview, key specs, numbered steps, and validation criteria, all grounded in KB evidence.
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
@@ -182,7 +206,7 @@ Returns an overview, key specs, numbered steps, and validation criteria — all 
 </details>
 
 <details>
-<summary><b><code>review_plan</code></b> — Review a plan against KB best practices</summary>
+<summary><b><code>review_plan</code></b>: Review a plan against KB best practices</summary>
 <br>
 
 Catches incorrect assumptions before you write code. Returns approvals, risks, and improvement suggestions.
@@ -197,7 +221,7 @@ Catches incorrect assumptions before you write code. Returns approvals, risks, a
 ### Verify & Debug
 
 <details>
-<summary><b><code>verify_code_math</code></b> — Verify code against ML/math concepts</summary>
+<summary><b><code>verify_code_math</code></b>: Verify code against ML/math concepts</summary>
 <br>
 
 Checks your code against documented behavior and reference implementations. Returns a Pass/Fail verdict with analysis.
@@ -210,7 +234,7 @@ Checks your code against documented behavior and reference implementations. Retu
 </details>
 
 <details>
-<summary><b><code>diagnose_failure</code></b> — Diagnose training/deployment failures</summary>
+<summary><b><code>diagnose_failure</code></b>: Diagnose training/deployment failures</summary>
 <br>
 
 Matches symptoms against known failure patterns and misconfigurations. Returns diagnosis, fix steps, and prevention advice.
@@ -225,10 +249,10 @@ Matches symptoms against known failure patterns and misconfigurations. Returns d
 ### Explore & Optimize
 
 <details>
-<summary><b><code>propose_hypothesis</code></b> — Propose ranked next-step hypotheses</summary>
+<summary><b><code>propose_hypothesis</code></b>: Propose ranked next-step hypotheses</summary>
 <br>
 
-When you're stuck, get alternative approaches ranked by fit — backed by documented patterns. Returns ranked ideas with rationale and suggested experiments.
+When you're stuck, get alternative approaches ranked by fit, backed by documented patterns. Returns ranked ideas with rationale and suggested experiments.
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
@@ -238,7 +262,7 @@ When you're stuck, get alternative approaches ranked by fit — backed by docume
 </details>
 
 <details>
-<summary><b><code>query_hyperparameter_priors</code></b> — Query hyperparameter values, ranges & heuristics</summary>
+<summary><b><code>query_hyperparameter_priors</code></b>: Query hyperparameter values, ranges & heuristics</summary>
 <br>
 
 Start with battle-tested defaults instead of guessing. Returns a suggestion table with KB-grounded justification.
@@ -249,25 +273,9 @@ Start with battle-tested defaults instead of guessing. Returns a suggestion tabl
 
 </details>
 
-## Environment Variables
+## Documentation
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `LEEROOPEDIA_API_KEY` | Yes | — | Your Leeroopedia API key |
-| `LEEROOPEDIA_API_URL` | No | `https://api.leeroopedia.com` | API endpoint |
-| `LEEROOPEDIA_POLL_MAX_WAIT` | No | `300` | Max seconds to wait for a search task |
-| `LEEROOPEDIA_POLL_INTERVAL` | No | `0.5` | Initial poll interval in seconds (grows via backoff) |
-
-## Troubleshooting
-
-| Error | Fix |
-|-------|-----|
-| `spawn uvx ENOENT` | Your IDE can't find `uvx`. Run `which uvx` (or `where uvx` on Windows) in your terminal, then use the full path as the `command` value in your config |
-| `LEEROOPEDIA_API_KEY is required` | Set `LEEROOPEDIA_API_KEY` in your MCP config `env` block |
-| `Invalid or revoked API key` (401) | Re-copy your key from [app.leeroopedia.com](https://app.leeroopedia.com) |
-| `Insufficient credits` (402) | Purchase more credits at [app.leeroopedia.com](https://app.leeroopedia.com) |
-| `Rate limit exceeded` (429) | Wait for the retry period before making more requests |
-| `Search timed out` (504) | Try a more specific query, or increase `LEEROOPEDIA_POLL_MAX_WAIT` |
+For environment variables, troubleshooting, and detailed tool usage, see the [full documentation](https://docs.leeroopedia.com).
 
 ## Contributing
 
