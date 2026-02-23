@@ -88,4 +88,4 @@ This runs the full pipeline:
 
 Both agents work in isolated `/tmp` sandboxes. Solutions are copied to `workspaces/baseline/` and `workspaces/with_kb/` after each phase.
 
-> **Tip:** For better Leeroopedia usage, append the contents of [`leeroopedia_tool_usage.md`](leeroopedia_tool_usage.md) to the end of `kernelbench_proposal.md`. This teaches the agent the recommended per-problem workflow for KB lookups.
+> **Tip:** For better Leeroopedia usage, append the contents of [`SKILL.md`](SKILL.md) to the end of `kernelbench_proposal.md`. This teaches the agent the recommended per-problem workflow for KB lookups.

@@ -86,4 +86,4 @@ This runs the full pipeline:
 
 Both agents work in isolated `/tmp` sandboxes. Generated code is copied to `workspaces/task2_self_evolving_rag/with_kb/` and `workspaces/task2_self_evolving_rag/baseline/` after each phase.
 
-> **Tip:** For better Leeroopedia usage, append the contents of [`leeroopedia_tools.md`](leeroopedia_tools.md) to the end of `proposal.md`. This teaches the agent when and how to call the KB tools.
+> **Tip:** For better Leeroopedia usage, append the contents of [`SKILL.md`](SKILL.md) to the end of `proposal.md`. This teaches the agent when and how to call the KB tools.

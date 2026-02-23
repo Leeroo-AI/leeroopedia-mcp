@@ -31,7 +31,7 @@ from dotenv import load_dotenv
 BENCH_DIR = Path(__file__).resolve().parent
 PROPOSAL_FILE = BENCH_DIR / "proposal.md"
 MCP_CONFIG_PATH = BENCH_DIR / "leeroopedia_mcp_config.json"
-KB_TOOLS_REF = BENCH_DIR / "leeroopedia_tools_reference.md"
+KB_TOOLS_REF = BENCH_DIR / "SKILL.md"
 WORKSPACES_DIR = BENCH_DIR / "workspaces"
 RESULTS_FILE = BENCH_DIR / "benchmark_results.json"
 
@@ -763,9 +763,9 @@ def run_proposal_benchmark():
     kb_tools_text = ""
     if KB_TOOLS_REF.exists():
         kb_tools_text = KB_TOOLS_REF.read_text(encoding="utf-8")
-        print(f"Loaded leeroopedia_tools_reference.md ({len(kb_tools_text)} chars)")
+        print(f"Loaded SKILL.md ({len(kb_tools_text)} chars)")
     else:
-        print("WARNING: leeroopedia_tools_reference.md not found, "
+        print("WARNING: SKILL.md not found, "
               "with_kb agent won't have KB tool docs")
 
     # Build agent prompts with strong execution preamble.

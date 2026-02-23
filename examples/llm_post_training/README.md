@@ -71,4 +71,4 @@ This runs the full pipeline:
 
 Both agents work in isolated `/tmp` sandboxes. Generated code and model artifacts are copied to `workspaces/proposal_benchmark/baseline/` and `workspaces/proposal_benchmark/with_kb/` after each phase.
 
-> **Tip:** For better Leeroopedia usage, append the contents of [`leeroopedia_tools_usage.md`](leeroopedia_tools_usage.md) to the end of `proposal.md`. This teaches the agent when and how to call the KB tools (the benchmark already does this automatically for the with-KB phase).
+> **Tip:** For better Leeroopedia usage, append the contents of [`SKILL.md`](SKILL.md) to the end of `proposal.md`. This teaches the agent when and how to call the KB tools (the benchmark already does this automatically for the with-KB phase).
