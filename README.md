@@ -70,7 +70,7 @@ Just paste this URL into any MCP client that supports remote servers:
 https://mcp.leeroopedia.com/mcp?token=kpsk_your_key_here
 ```
 
-See the [connect guides](https://docs.leeroopedia.com) for running locally.
+See the **[connect guides](https://docs.leeroopedia.com)** for all IDEs, running locally, and troubleshooting.
 
 ### 3. Configure Claude Code
 
@@ -275,7 +275,7 @@ Start with battle-tested defaults instead of guessing. Returns a suggestion tabl
 
 ## Documentation
 
-For environment variables, troubleshooting, and detailed tool usage, see the [full documentation](https://docs.leeroopedia.com).
+> **[docs.leeroopedia.com](https://docs.leeroopedia.com)** — full setup guides, environment variables, troubleshooting, connect guides for every IDE, and detailed tool usage.
 
 ## Contributing
 

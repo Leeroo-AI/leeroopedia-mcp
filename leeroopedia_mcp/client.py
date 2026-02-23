@@ -88,7 +88,7 @@ class LeeroopediaClient:
         # Use a longer timeout for individual requests (polling is fast)
         self.client = httpx.AsyncClient(
             base_url=config.api_url,
-            timeout=60.0,
+            timeout=300.0,
             headers={
                 "X-API-Key": config.api_key,
                 "Content-Type": "application/json",
