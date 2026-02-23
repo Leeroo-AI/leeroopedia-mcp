@@ -159,119 +159,19 @@ LEEROOPEDIA_API_KEY = "kpsk_your_key_here"
 
 > **Getting `spawn uvx ENOENT`?** See the tip in [Configure Claude Code](#3-configure-claude-code) above.
 
-## Available Tools
+### 6. Optional: Add the Agent Skill File
 
-The MCP server provides **8 agentic tools**. Each tool (except `get_page`) triggers an AI agent on the backend that searches the knowledge base from multiple angles, reads relevant pages, and synthesizes a structured response.
+For coding agents that support project-level instruction files (Claude Code, Cursor, Codex), you can add an optional skill file that teaches the agent **when and how** to pick the right Leeroopedia tool for each situation. This improves tool selection, encourages parallel searches, and provides canonical workflows for common tasks like "How do I implement X?" or "My run crashed".
 
-### Search & Retrieve
+Download [`SKILL.md`](https://raw.githubusercontent.com/Leeroo-AI/leeroopedia-mcp/main/SKILL.md) and place it in the appropriate location for your agent:
 
-<details>
-<summary><b><code>search_knowledge</code></b>: Search the KB for framework docs, APIs, and best practices</summary>
-<br>
+| Agent | Where to place the file | Format |
+|-------|------------------------|--------|
+| **Claude Code** | Project root or `CLAUDE.md` (paste the content) | Markdown |
+| **Cursor** | `.cursor/rules/leeroopedia.md` (or add as an Agent Skill) | Markdown |
+| **Codex** | Project root `AGENTS.md` (paste the content) | Markdown |
 
-An AI agent synthesizes a grounded answer with `[PageID]` citations.
-
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `query` | Yes | What you want to find out |
-| `context` | No | Optional context about what you're building |
-
-</details>
-
-<details>
-<summary><b><code>get_page</code></b>: Retrieve a specific KB page by ID</summary>
-<br>
-
-Direct lookup, no AI agent needed. Use this to drill into `[PageID]` citations from other tools.
-
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `page_id` | Yes | Exact page ID (e.g., `Workflow/QLoRA_Finetuning`, `Principle/LoRA_Rank_Selection`) |
-
-</details>
-
-### Plan & Review
-
-<details>
-<summary><b><code>build_plan</code></b>: Build a step-by-step ML execution plan</summary>
-<br>
-
-Returns an overview, key specs, numbered steps, and validation criteria, all grounded in KB evidence.
-
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `goal` | Yes | What you want to accomplish |
-| `constraints` | No | Constraints or requirements (e.g., hardware limits, time budget) |
-
-</details>
-
-<details>
-<summary><b><code>review_plan</code></b>: Review a plan against KB best practices</summary>
-<br>
-
-Catches incorrect assumptions before you write code. Returns approvals, risks, and improvement suggestions.
-
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `proposal` | Yes | The plan or proposal to review |
-| `goal` | Yes | The intended goal of the plan |
-
-</details>
-
-### Verify & Debug
-
-<details>
-<summary><b><code>verify_code_math</code></b>: Verify code against ML/math concepts</summary>
-<br>
-
-Checks your code against documented behavior and reference implementations. Returns a Pass/Fail verdict with analysis.
-
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `code_snippet` | Yes | The code to verify |
-| `concept_name` | Yes | The mathematical/ML concept being implemented |
-
-</details>
-
-<details>
-<summary><b><code>diagnose_failure</code></b>: Diagnose training/deployment failures</summary>
-<br>
-
-Matches symptoms against known failure patterns and misconfigurations. Returns diagnosis, fix steps, and prevention advice.
-
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `symptoms` | Yes | Description of the failure symptoms |
-| `logs` | Yes | Relevant log output or error messages |
-
-</details>
-
-### Explore & Optimize
-
-<details>
-<summary><b><code>propose_hypothesis</code></b>: Propose ranked next-step hypotheses</summary>
-<br>
-
-When you're stuck, get alternative approaches ranked by fit, backed by documented patterns. Returns ranked ideas with rationale and suggested experiments.
-
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `current_status` | Yes | Where the project stands now |
-| `recent_experiments` | No | Description of recent experiments and their outcomes |
-
-</details>
-
-<details>
-<summary><b><code>query_hyperparameter_priors</code></b>: Query hyperparameter values, ranges & heuristics</summary>
-<br>
-
-Start with battle-tested defaults instead of guessing. Returns a suggestion table with KB-grounded justification.
-
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `query` | Yes | Hyperparameter question (e.g., "learning rate for LoRA fine-tuning Llama-3 8B") |
-
-</details>
+> This step is optional. The MCP tools work without the skill file. The skill file just helps the agent make better tool choices automatically.
 
 ## Documentation
 

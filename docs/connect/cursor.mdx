@@ -98,6 +98,16 @@ You can then follow up with:
 
 > "Get the full page for [PageID] that was cited."
 
+## Optional: Add the Agent Skill File
+
+You can add an optional skill file that teaches Cursor's agent **when and how** to pick the right Leeroopedia tool. This improves tool selection, encourages parallel searches, and provides canonical workflows for common tasks.
+
+Download [`SKILL.md`](https://raw.githubusercontent.com/Leeroo-AI/leeroopedia-mcp/main/SKILL.md) and place it at `.cursor/rules/leeroopedia.md` in your project (or add it as an Agent Skill). Cursor reads rule files automatically during agent sessions.
+
+<Note>
+  This step is optional. The MCP tools work without the skill file. The skill file just helps the agent make better tool choices automatically.
+</Note>
+
 ## Next Steps
 
 <CardGroup cols={2}>

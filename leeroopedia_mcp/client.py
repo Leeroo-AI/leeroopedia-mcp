@@ -244,7 +244,7 @@ class LeeroopediaClient:
         interface - the async polling is handled internally.
 
         Args:
-            tool: Agentic tool name (one of 7 tools)
+            tool: Agentic tool name (one of 8 tools)
             arguments: Tool-specific arguments dict
 
         Returns:

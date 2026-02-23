@@ -71,6 +71,16 @@ You can then follow up with:
 
 > "Get the full page for [PageID] that was cited."
 
+## Optional: Add the Agent Skill File
+
+You can add an optional skill file that teaches Codex **when and how** to pick the right Leeroopedia tool. This improves tool selection, encourages parallel searches, and provides canonical workflows for common tasks.
+
+Download [`SKILL.md`](https://raw.githubusercontent.com/Leeroo-AI/leeroopedia-mcp/main/SKILL.md) and paste its contents into your project's `AGENTS.md` file (create one if it doesn't exist). Codex reads this file automatically at the start of every session.
+
+<Note>
+  This step is optional. The MCP tools work without the skill file. The skill file just helps the agent make better tool choices automatically.
+</Note>
+
 ## Next Steps
 
 <CardGroup cols={2}>
