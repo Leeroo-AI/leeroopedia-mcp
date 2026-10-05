@@ -6,8 +6,16 @@ Thank you for your interest in contributing! This guide will help you get starte
 
 ### Prerequisites
 
-- Python 3.10+
+- Python 3.10 or newer
 - Git
+
+Check your interpreter before creating the virtual environment:
+
+```bash
+python3 --version   # must print 3.10 or newer
+```
+
+On some systems `python` or `python3` still points to an older release. If so, use a versioned command such as `python3.12` in the setup step below. An interpreter older than 3.10 fails at install time with `Could not find a version that satisfies the requirement mcp`.
 
 ### Development Setup
 
@@ -17,7 +25,7 @@ git clone https://github.com/Leeroo-AI/leeroopedia-mcp.git
 cd leeroopedia-mcp
 
 # Create a virtual environment
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 
 # Install in editable mode
