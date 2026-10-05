@@ -56,6 +56,19 @@ description: "Common issues and how to fix them"
   If `uvx` is not installed at all, install `uv` first: [docs.astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/).
 </Accordion>
 
+<Accordion title="Server is configured but the tools don't appear">
+  Most clients read their MCP config only at startup, and some read more than one config file.
+
+  **Fix:**
+
+  1. Fully restart the client, or reload its MCP servers, after every config change.
+  2. Check that you edited a file your client actually reads. A server added to a project file is only available inside that project:
+     - **Claude Code:** `~/.claude.json` (all projects) or `.mcp.json` in the project root (that project only)
+     - **Cursor:** `~/.cursor/mcp.json` (all projects) or `.cursor/mcp.json` in the project root (that project only)
+     - **Codex:** `~/.codex/config.toml`
+  3. Make sure the file is still valid JSON (TOML for Codex). A trailing comma or a missing brace can make the client ignore the file without showing an error.
+</Accordion>
+
 <Accordion title="MCP server not starting">
   If Claude Code or Cursor cannot connect to the MCP server, check that uvx is installed, test the server directly with LEEROOPEDIA_API_KEY set, and run claude mcp list to verify connectivity.
 </Accordion>
