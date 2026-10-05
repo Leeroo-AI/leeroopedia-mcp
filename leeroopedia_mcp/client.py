@@ -14,6 +14,7 @@ from typing import Any, Dict, Optional
 
 import httpx
 
+from . import __version__
 from .config import Config
 
 logger = logging.getLogger(__name__)
@@ -92,7 +93,7 @@ class LeeroopediaClient:
             headers={
                 "X-API-Key": config.api_key,
                 "Content-Type": "application/json",
-                "User-Agent": "leeroopedia-mcp/0.2.0",
+                "User-Agent": f"leeroopedia-mcp/{__version__}",
             },
         )
 

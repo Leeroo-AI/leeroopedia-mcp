@@ -4,7 +4,7 @@ MCP tool definitions for Leeroopedia agentic KG search.
 Provides 8 agentic tools that run Claude Code agents to search,
 read, and synthesize structured responses from the knowledge base.
 
-The knowledge base covers 100+ ML/AI frameworks and libraries including
+The knowledge base covers 1000+ ML/AI frameworks and libraries including
 vLLM, SGLang, DeepSpeed, Axolotl, ROLL, MNN, ColossalAI, TRL, PEFT,
 LLaMA-Factory, and many more. It contains architecture docs, API references,
 config formats, best practices, and implementation patterns.
