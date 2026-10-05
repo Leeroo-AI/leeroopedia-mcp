@@ -3,9 +3,10 @@
 import asyncio
 
 import pytest
-from mcp.shared.memory import create_connected_server_and_client_session
 
 import leeroopedia_mcp.server as server_module
+from fakes import connect
+from leeroopedia_mcp import __version__
 from leeroopedia_mcp.client import (
     APIError,
     AuthenticationError,
@@ -14,7 +15,13 @@ from leeroopedia_mcp.client import (
     SearchResponse,
     TaskTimeoutError,
 )
-from leeroopedia_mcp.tools import TOOL_NAMES
+from leeroopedia_mcp.tools import REQUIRED_ARGUMENTS, TOOL_NAMES
+
+# These tests run against whichever mcp SDK line is installed (1.x or 2.x)
+on_mcp_2 = pytest.mark.skipif(
+    server_module.USES_DECORATOR_API,
+    reason="mcp 1.x reports the SDK version and has no in-memory server_info",
+)
 
 
 def ok(results="# Answer [Page/One]", credits_remaining=99):
@@ -52,7 +59,7 @@ def session_call(config, monkeypatch):
 
         async def _main():
             server = server_module.create_mcp_server(config)
-            async with create_connected_server_and_client_session(server) as session:
+            async with connect(server) as session:
                 return await action(session)
 
         return asyncio.run(_main()), backend
@@ -80,6 +87,29 @@ def test_lists_all_eight_tools(session_call):
 
     assert {tool.name for tool in result.tools} == TOOL_NAMES
     assert len(result.tools) == 8
+
+
+def test_listed_tools_carry_their_input_schema(session_call):
+    async def action(session):
+        return await session.list_tools()
+
+    result, _ = session_call(action)
+
+    for tool in result.tools:
+        schema = tool.model_dump(by_alias=True)["inputSchema"]
+        assert schema["type"] == "object"
+        assert schema["required"] == REQUIRED_ARGUMENTS[tool.name]
+
+
+@on_mcp_2
+def test_server_reports_the_package_version(session_call):
+    async def action(session):
+        return session.server_info
+
+    info, _ = session_call(action)
+
+    assert info.name == "leeroopedia"
+    assert info.version == __version__
 
 
 def test_tool_call_forwards_name_and_arguments_untouched(call_tool):
@@ -121,6 +151,30 @@ def test_unknown_tool_is_rejected_without_calling_the_backend(call_tool):
     assert text.startswith("Unknown tool: nope")
     assert "search_knowledge" in text
     assert backend.calls == []
+
+
+@pytest.mark.parametrize(
+    "name, arguments, missing",
+    [
+        ("search_knowledge", {}, "query"),
+        ("search_knowledge", {"context": "only the optional one"}, "query"),
+        ("review_plan", {"proposal": "p"}, "goal"),
+        ("get_page", {}, "page_id"),
+    ],
+)
+def test_missing_required_argument_never_reaches_the_backend(call_tool, name, arguments, missing):
+    # mcp 1.x rejects this in the SDK, 2.x leaves it to the server. Either
+    # way the agent is told what is missing and no credit is spent.
+    text, backend = call_tool(name=name, arguments=arguments)
+
+    assert missing in text
+    assert backend.calls == []
+
+
+def test_optional_arguments_may_be_omitted(call_tool):
+    _, backend = call_tool(name="search_knowledge", arguments={"query": "q"})
+
+    assert backend.calls == [("search_knowledge", {"query": "q"})]
 
 
 @pytest.mark.parametrize(

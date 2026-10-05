@@ -249,6 +249,13 @@ Returns the page formatted as markdown, or an error if the page ID is not found.
     ]
 
 
+# Required argument names per tool, read from each tool's input schema
+REQUIRED_ARGUMENTS: Dict[str, List[str]] = {
+    tool["name"]: list(tool["inputSchema"].get("required", []))
+    for tool in get_tool_definitions()
+}
+
+
 TOOL_NAMES = {
     "search_knowledge",
     "build_plan",

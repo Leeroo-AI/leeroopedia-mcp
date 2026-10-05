@@ -59,6 +59,13 @@ pytest
 
 The suite mocks the API gateway, so it needs no API key and spends no credits. Add or update tests when you change behavior.
 
+The server supports both the 1.x and 2.x lines of the `mcp` SDK, and the suite runs against whichever one is installed. When you change `server.py`, run it against both:
+
+```bash
+pip install "mcp<2" && pytest
+pip install "mcp>=2,<3" && pytest
+```
+
 ### Linting
 
 ```bash

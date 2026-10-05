@@ -1,9 +1,9 @@
 """Tool definitions exposed over MCP (tools.py)."""
 
 import pytest
-from mcp.types import Tool
 
-from leeroopedia_mcp.tools import TOOL_NAMES, get_tool_definitions
+from leeroopedia_mcp.server import build_tools
+from leeroopedia_mcp.tools import REQUIRED_ARGUMENTS, TOOL_NAMES, get_tool_definitions
 
 DEFINITIONS = get_tool_definitions()
 
@@ -21,14 +21,26 @@ def test_definitions_match_the_dispatch_table():
     assert set(names) == TOOL_NAMES
 
 
+def test_required_arguments_cover_every_tool():
+    assert set(REQUIRED_ARGUMENTS) == TOOL_NAMES
+    assert REQUIRED_ARGUMENTS["search_knowledge"] == ["query"]
+    assert REQUIRED_ARGUMENTS["review_plan"] == ["proposal", "goal"]
+
+
+def test_definitions_build_valid_mcp_tools():
+    # Goes through the installed SDK's Tool model, so a definition the SDK
+    # rejects fails here rather than when a client connects.
+    tools = build_tools()
+
+    assert [tool.name for tool in tools] == [d["name"] for d in DEFINITIONS]
+    for tool, definition in zip(tools, DEFINITIONS):
+        dumped = tool.model_dump(by_alias=True)
+        assert dumped["description"] == definition["description"]
+        assert dumped["inputSchema"] == definition["inputSchema"]
+
+
 @pytest.mark.parametrize("definition", DEFINITIONS, ids=lambda d: d["name"])
 class TestEachTool:
-    def test_is_a_valid_mcp_tool(self, definition):
-        tool = Tool(**definition)
-
-        assert tool.name == definition["name"]
-        assert tool.inputSchema == definition["inputSchema"]
-
     def test_has_a_description(self, definition):
         assert definition["description"].strip()
 

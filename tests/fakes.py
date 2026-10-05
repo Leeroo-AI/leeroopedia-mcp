@@ -5,6 +5,7 @@ Nothing here touches the network, so the suite spends no API credits.
 Response shapes mirror what the real gateway returns.
 """
 
+from contextlib import asynccontextmanager
 from typing import Any, Callable, Dict, List, Optional
 
 import httpx
@@ -117,3 +118,24 @@ class FakeClock:
     async def sleep(self, seconds: float) -> None:
         self.sleeps.append(seconds)
         self.now += seconds
+
+
+@asynccontextmanager
+async def connect(server):
+    """
+    Connect an in-memory MCP client to `server`.
+
+    Works on both supported SDK lines. Either way the yielded object has
+    list_tools() and call_tool(name, arguments).
+    """
+    try:
+        from mcp import Client  # mcp 2.x
+    except ImportError:
+        # mcp 1.x
+        from mcp.shared.memory import create_connected_server_and_client_session
+
+        async with create_connected_server_and_client_session(server) as session:
+            yield session
+    else:
+        async with Client(server) as client:
+            yield client
