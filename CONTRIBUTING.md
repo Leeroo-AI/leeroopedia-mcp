@@ -28,8 +28,8 @@ cd leeroopedia-mcp
 python3 -m venv .venv
 source .venv/bin/activate
 
-# Install in editable mode
-pip install -e .
+# Install in editable mode, with the test dependencies
+pip install -e ".[dev]"
 ```
 
 ### Environment Variables
@@ -51,6 +51,14 @@ Get your API key at [app.leeroopedia.com](https://app.leeroopedia.com).
 - Use clear, consistent naming
 - Add helpful comments to explain non-obvious logic
 
+### Testing
+
+```bash
+pytest
+```
+
+The suite mocks the API gateway, so it needs no API key and spends no credits. Add or update tests when you change behavior.
+
 ### Linting
 
 ```bash
@@ -65,7 +73,7 @@ flake8 leeroopedia_mcp/
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/your-feature`)
 3. Make your changes
-4. Run linting
+4. Run tests and linting
 5. Commit with a clear message
 6. Push to your fork
 7. Open a Pull Request
@@ -92,6 +100,7 @@ leeroopedia-mcp/
 │   ├── client.py         # HTTP client (async task API)
 │   ├── config.py         # Configuration from env vars
 │   └── tools.py          # MCP tool definitions (8 agentic tools)
+├── tests/                # pytest suite (mocked gateway, no credits used)
 ├── .github/workflows/    # CI/CD (PyPI publish on release)
 ├── pyproject.toml        # Package metadata
 └── README.md
