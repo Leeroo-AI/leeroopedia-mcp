@@ -51,6 +51,8 @@ graph TB
 
   <Step title="Polling with exponential backoff">
     The client polls GET /v1/search/task/task_id with exponential backoff. Starts at 0.5 seconds, grows by 1.5x each iteration, caps at 5 seconds between polls, and times out after 300 seconds (configurable).
+
+    If a poll request itself fails (network error, 429, or a 5xx response), the client keeps the task_id and polls again, so a brief outage does not throw away a search that is already running. Authentication and credit errors still fail immediately.
   </Step>
 
   <Step title="Results returned">

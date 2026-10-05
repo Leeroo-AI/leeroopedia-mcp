@@ -91,10 +91,13 @@ def create_mcp_server(config: Config) -> "Server":
         try:
             response = await client.search(tool=name, arguments=arguments)
 
-            footer = f"\n\n---\n*Credits remaining: {response.credits_remaining}*"
+            text = response.results or "No results returned."
+            # The gateway may not report a balance - only show it when known
+            if response.credits_remaining is not None:
+                text += f"\n\n---\n*Credits remaining: {response.credits_remaining}*"
             return [TextContent(
                 type="text",
-                text=response.results + footer,
+                text=text,
             )]
 
         except AuthenticationError as e:
@@ -116,7 +119,7 @@ def create_mcp_server(config: Config) -> "Server":
             )]
 
         except TaskTimeoutError as e:
-            logger.warning(f"Search task timed out: {e.task_id}")
+            logger.warning(f"Search task timed out: {e}")
             return [TextContent(
                 type="text",
                 text=f"Search timed out ({e.task_id}). "

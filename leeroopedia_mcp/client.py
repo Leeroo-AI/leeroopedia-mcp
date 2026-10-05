@@ -53,13 +53,20 @@ class RateLimitError(APIError):
 
 class TaskTimeoutError(APIError):
     """Raised when a search task does not complete in time."""
-    def __init__(self, task_id: str, max_wait: int):
-        super().__init__(
-            f"Search task {task_id} did not complete within {max_wait}s",
-            "task_timeout",
-            504
-        )
+    def __init__(self, task_id: str, max_wait: int, last_error: Optional[str] = None):
+        message = f"Search task {task_id} did not complete within {max_wait}s"
+        if last_error:
+            # Polling was still failing at the deadline - say why
+            message += f" (last poll error: {last_error})"
+        super().__init__(message, "task_timeout", 504)
         self.task_id = task_id
+
+
+class _TransientPollError(Exception):
+    """A single poll attempt failed in a way that is worth retrying."""
+    def __init__(self, reason: str, retry_after: Optional[float] = None):
+        super().__init__(reason)
+        self.retry_after = retry_after
 
 
 @dataclass
@@ -68,8 +75,54 @@ class SearchResponse:
     success: bool
     results: str
     latency_ms: int
-    credits_remaining: int
+    # None when the gateway did not report a balance
+    credits_remaining: Optional[int]
     error: Optional[str] = None
+
+
+def _parse_error_body(response: httpx.Response) -> Dict[str, Any]:
+    """
+    Extract error details from a gateway error response.
+
+    The gateway wraps errors as {"error": ..., "message": <detail>}, where
+    <detail> is a string or a dict such as
+    {"error": "invalid_api_key", "message": "..."}. FastAPI's default
+    {"detail": <detail>} envelope is accepted too. A proxy in front of the
+    gateway can answer with a non-JSON body (e.g. an HTML 502 page), so the
+    body is never assumed to parse.
+
+    Returns:
+        Dict with optional "message", "error" and "retry_after" keys
+    """
+    try:
+        body = response.json()
+    except ValueError:
+        return {}
+    if not isinstance(body, dict):
+        return {}
+
+    detail = body.get("detail", body.get("message"))
+    if isinstance(detail, dict):
+        return detail
+    if isinstance(detail, str) and detail:
+        return {"message": detail, "error": body.get("error")}
+    return {"error": body.get("error")}
+
+
+def _retry_after_seconds(
+    response: httpx.Response,
+    error_data: Dict[str, Any],
+    default: int = 60,
+) -> int:
+    """Read the retry delay from the error body or the Retry-After header."""
+    for raw in (error_data.get("retry_after"), response.headers.get("Retry-After")):
+        try:
+            seconds = int(float(raw))
+        except (TypeError, ValueError, OverflowError):
+            continue
+        if seconds >= 0:
+            return seconds
+    return default
 
 
 class LeeroopediaClient:
@@ -84,7 +137,15 @@ class LeeroopediaClient:
     # Terminal task statuses that stop polling
     TERMINAL_STATUSES = {"success", "failure"}
 
-    def __init__(self, config: Config):
+    # HTTP statuses on a poll request that are worth retrying. The task keeps
+    # running on the backend, so a failed status check must not discard it.
+    RETRYABLE_POLL_STATUSES = {429, 500, 502, 503, 504}
+
+    def __init__(
+        self,
+        config: Config,
+        transport: Optional[httpx.AsyncBaseTransport] = None,
+    ):
         self.config = config
         # Use a longer timeout for individual requests (polling is fast)
         self.client = httpx.AsyncClient(
@@ -95,6 +156,8 @@ class LeeroopediaClient:
                 "Content-Type": "application/json",
                 "User-Agent": f"leeroopedia-mcp/{__version__}",
             },
+            # Only set by tests, to mock the gateway without real HTTP
+            transport=transport,
         )
 
     async def close(self) -> None:
@@ -114,26 +177,31 @@ class LeeroopediaClient:
             RateLimitError: 429 - rate limited
             APIError: Other 4xx/5xx errors
         """
-        if response.status_code == 401:
-            error_data = response.json().get("detail", {})
-            raise AuthenticationError(error_data.get("message", "Invalid API key"))
+        status = response.status_code
+        if status < 400:
+            return
 
-        if response.status_code == 402:
-            error_data = response.json().get("detail", {})
-            raise InsufficientCreditsError(error_data.get("message"))
+        error_data = _parse_error_body(response)
+        message = error_data.get("message")
+        if not isinstance(message, str) or not message:
+            message = None
 
-        if response.status_code == 429:
-            error_data = response.json().get("detail", {})
-            retry_after = error_data.get("retry_after", 60)
-            raise RateLimitError(retry_after)
+        if status == 401:
+            raise AuthenticationError(message or "Invalid API key")
 
-        if response.status_code >= 400:
-            error_data = response.json().get("detail", {})
-            raise APIError(
-                error_data.get("message", "API error"),
-                error_data.get("error", "api_error"),
-                response.status_code,
-            )
+        if status == 402:
+            # Fall back to the exception's default text rather than passing None
+            raise InsufficientCreditsError(message) if message else InsufficientCreditsError()
+
+        if status == 429:
+            raise RateLimitError(_retry_after_seconds(response, error_data))
+
+        code = error_data.get("error")
+        raise APIError(
+            message or f"API error (HTTP {status})",
+            code if isinstance(code, str) and code else "api_error",
+            status,
+        )
 
     async def _create_search_task(
         self,
@@ -176,12 +244,58 @@ class LeeroopediaClient:
         logger.info(f"Search task created: {task_id}")
         return task_id
 
+    async def _poll_once(self, task_id: str) -> Dict[str, Any]:
+        """
+        Make a single status request for a task.
+
+        Args:
+            task_id: The task ID returned from _create_search_task
+
+        Returns:
+            The parsed task status payload
+
+        Raises:
+            _TransientPollError: Network error, retryable HTTP status, or an
+                unreadable body. The task is still valid - poll again.
+            AuthenticationError, InsufficientCreditsError, APIError:
+                HTTP errors that retrying will not fix
+        """
+        try:
+            response = await self.client.get(f"/v1/search/task/{task_id}")
+        except httpx.TransportError as e:
+            # Timeouts, connection resets, DNS failures, etc.
+            reason = type(e).__name__ + (f": {e}" if str(e) else "")
+            raise _TransientPollError(reason) from e
+
+        if response.status_code in self.RETRYABLE_POLL_STATUSES:
+            retry_after = None
+            if response.status_code == 429:
+                # Respect the gateway's requested delay when it gives one
+                error_data = _parse_error_body(response)
+                retry_after = _retry_after_seconds(response, error_data, default=0) or None
+            raise _TransientPollError(f"HTTP {response.status_code}", retry_after)
+
+        # Any other 4xx (401, 402, 404, ...) will not fix itself
+        self._handle_error_response(response)
+
+        try:
+            data = response.json()
+        except ValueError as e:
+            raise _TransientPollError("poll response was not valid JSON") from e
+        if not isinstance(data, dict):
+            raise _TransientPollError("poll response was not a JSON object")
+        return data
+
     async def _poll_search_task(self, task_id: str) -> SearchResponse:
         """
         Poll GET /search/task/{task_id} until the task completes.
 
         Uses exponential backoff: starts at config.poll_initial_interval,
         grows by 1.5x each iteration, capped at 5 seconds.
+
+        A poll request that fails transiently (network error, 429, 5xx) is
+        retried with the same task_id. The task is already running and paid
+        for, so one failed status check must not throw its result away.
 
         Args:
             task_id: The task ID returned from _create_search_task
@@ -191,46 +305,60 @@ class LeeroopediaClient:
 
         Raises:
             TaskTimeoutError: If task doesn't complete within max_wait
-            APIError: If the task fails or polling encounters an error
+            APIError: If the task fails or polling hits a non-retryable error
         """
         max_wait = self.config.poll_max_wait
         delay = self.config.poll_initial_interval
         max_delay = 5.0  # Cap backoff at 5 seconds
         start_time = time.monotonic()
+        last_error: Optional[str] = None
 
         while time.monotonic() - start_time < max_wait:
-            response = await self.client.get(f"/v1/search/task/{task_id}")
+            wait = delay
 
-            # Handle HTTP-level errors on the poll endpoint
-            if response.status_code >= 400:
-                self._handle_error_response(response)
+            try:
+                data = await self._poll_once(task_id)
+            except _TransientPollError as e:
+                last_error = str(e)
+                if e.retry_after:
+                    wait = max(wait, e.retry_after)
+                logger.warning(f"Poll for task {task_id} failed ({e}), retrying in {wait:.1f}s")
+            else:
+                last_error = None
+                status = data.get("status") or ""
 
-            data = response.json()
-            status = data.get("status", "")
+                if status == "success":
+                    if data.get("success") is False:
+                        # Task finished, but the backend reports the search itself failed
+                        error_msg = data.get("error") or "Search task failed"
+                        raise APIError(error_msg, "task_failure", 500)
 
-            if status == "success":
-                # Task completed - return results
-                return SearchResponse(
-                    success=data.get("success", True),
-                    results=data.get("results", ""),
-                    latency_ms=data.get("latency_ms", 0),
-                    credits_remaining=data.get("credits_remaining", 0),
-                )
+                    # The API sends explicit nulls for unset fields, so use "or":
+                    # data.get(key, default) would still return None for them.
+                    return SearchResponse(
+                        success=True,
+                        results=data.get("results") or "",
+                        latency_ms=data.get("latency_ms") or 0,
+                        credits_remaining=data.get("credits_remaining"),
+                    )
 
-            if status == "failure":
-                # Task failed - credits are auto-refunded by the gateway
-                error_msg = data.get("error", "Search task failed")
-                raise APIError(error_msg, "task_failure", 500)
+                if status == "failure":
+                    # Task failed - credits are auto-refunded by the gateway
+                    error_msg = data.get("error") or "Search task failed"
+                    raise APIError(error_msg, "task_failure", 500)
 
-            # Task still in progress (queued/pending/started) - wait and retry
-            logger.debug(f"Task {task_id} status: {status}, polling again in {delay:.1f}s")
-            await asyncio.sleep(delay)
+                # Task still in progress (queued/pending/started) - wait and retry
+                logger.debug(f"Task {task_id} status: {status}, polling again in {wait:.1f}s")
+
+            # Never sleep past the overall deadline
+            remaining = max_wait - (time.monotonic() - start_time)
+            await asyncio.sleep(max(0.0, min(wait, remaining)))
 
             # Exponential backoff capped at max_delay
             delay = min(delay * 1.5, max_delay)
 
         # Timed out waiting for task completion
-        raise TaskTimeoutError(task_id, max_wait)
+        raise TaskTimeoutError(task_id, max_wait, last_error)
 
     async def search(
         self,
@@ -259,13 +387,15 @@ class LeeroopediaClient:
             APIError: For other API errors
         """
         try:
-            # Step 1: Create the search task (returns immediately)
+            # Step 1: Create the search task (returns immediately).
+            # Not retried: a repeated POST could start and bill a second task.
             task_id = await self._create_search_task(
                 tool=tool,
                 arguments=arguments,
             )
 
-            # Step 2: Poll for the result with exponential backoff
+            # Step 2: Poll for the result with exponential backoff.
+            # Transient poll failures are retried inside _poll_search_task.
             return await self._poll_search_task(task_id)
 
         except (AuthenticationError, InsufficientCreditsError, RateLimitError, TaskTimeoutError):
